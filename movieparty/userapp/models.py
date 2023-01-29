@@ -1,6 +1,7 @@
 from django.db import models
 from movieapp.models import Room
 
+
 # Create your models here.
 class User(models.Model):
     username = models.CharField(max_length=50)

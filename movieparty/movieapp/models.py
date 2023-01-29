@@ -3,20 +3,20 @@ from django.db import models
 
 # Create your models here.
 class Movie(models.Model):
-    title = models.CharField(max_length=50)
-    description = models.TextField()
-    year = models.IntegerField()
-    genre = models.CharField(max_length=50)
-    cover_image = models.ImageField(upload_to='covers')
-    video = models.FileField(upload_to='videos')
+    title = models.CharField(max_length=50, verbose_name='Наименование фильма')
+    description = models.TextField(verbose_name='Описание', null=True, blank=True)
+    year = models.IntegerField(verbose_name='Год выпуска', null=True, blank=True)
+    genre = models.CharField(max_length=50, verbose_name='Жанр', null=True, blank=True)
+    cover_image = models.ImageField(upload_to='covers', verbose_name='Изображение обложки', null=True, blank=True)
+    video = models.FileField(upload_to='videos', verbose_name='Ссылка на фильм')
 
 
 class Room(models.Model):
-    name = models.CharField(max_length=50)
-    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
-    password = models.CharField(max_length=50)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    name = models.CharField(max_length=50, verbose_name='Имя комнаты')
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, verbose_name='Название фильма')
+    password = models.CharField(max_length=50, verbose_name='Пароль для комнаты', null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Время создания')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='Время обновления')
 
 
 class Playlist(models.Model):

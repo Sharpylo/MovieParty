@@ -1,0 +1,17 @@
+{% extends "movieapp/base.html" %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<form method="post" class="create-movie-form" action="{% url 'movies_list' %}">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <div class="d-grid">
+        <button type="submit" class="btn btn-outline-primary btn-block mb-3 mt-3"
+                data-bs-dismiss="modal">Submit
+        </button>
+    </div>
+
+</form>
+
+{% endblock %}
