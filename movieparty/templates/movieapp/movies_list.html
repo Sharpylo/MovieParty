@@ -1,6 +1,7 @@
 {% extends "movieapp/base.html" %}
 {% load crispy_forms_filters %}
 {% load crispy_forms_tags %}
+{% load static %}
 
 {% block content %}
 <div>
@@ -10,11 +11,18 @@
     {% if movies %}
     <div>
         {% for movie in movies %}
-        <div>
-            <p>{{ movie.title }}</p>
-            <p>{{ movie.description }}</p>
-            <p>{{ movie.year }}</p>
-            <p>{{ movie.genre }}</p>
+        <div class="movie_list">
+            <ul>
+                <p>{{ movie.title }}</p>
+                <li>{{ movie.description }}</li>
+                <li>{{ movie.year }}</li>
+                <li>{{ movie.genre }}</li>
+
+                {% if movie.cover_image %}
+                <img src="{{ movie.cover_image.url }}" width="300" height="300" class="" alt="...">
+                {% endif %}
+
+            </ul>
         </div>
         {% endfor %}
     </div>

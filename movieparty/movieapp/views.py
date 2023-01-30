@@ -1,6 +1,7 @@
-from django.shortcuts import render
-
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
+
 from .forms import MovieForm, RoomForm
 from .models import Movie
 
@@ -21,7 +22,12 @@ def movie_create(request):
         form = MovieForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('movies_list')
+            return HttpResponseRedirect(reverse_lazy('movies_list'))
+        else:
+            response = {}
+            for k in form.errors:
+                response[k] = form.errors[k][0]
+            return HttpResponse({"response": response})
     else:
         form = MovieForm()
     return render(request, 'movieapp/movie_create.html', {'form': form})
