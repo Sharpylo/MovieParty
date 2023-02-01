@@ -1,0 +1,35 @@
+{% extends "movieapp/base.html" %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block content %}
+<div>
+    <a class="create" href="{% url 'room_create' %}">Добавить комнату</a>
+</div>
+<div class="row">
+    {% if rooms %}
+    {% for room in rooms %}
+    <div class="col-3">{{ room.name }} - {{ room.created_at }}</div>
+    <div class="col-sm-1 p-3">
+        <div class="btn-group">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+                &equiv;
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="{% url 'room_update' room.id %}" class='dropdown-item'>Изменить</a>
+                </li>
+                <li><a href="{% url 'room_delete' room.id %}"
+                       onclick="return confirm('Вы уверены, что хотите удалить этот элемент?');"
+                       class='dropdown-item'>Удалить</a></li>
+            </ul>
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <p class="no_films">Комнат нет.</p>
+    {% endif %}
+</div>
+
+
+{% endblock %}

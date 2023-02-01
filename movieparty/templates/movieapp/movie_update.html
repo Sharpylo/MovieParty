@@ -3,12 +3,12 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<form method="post" class="create-room-form" action="{% url 'room_create' %}">
+<form method="post" class="update-movie-form" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form|crispy }}
     <div class="d-grid">
         <button type="submit" class="btn btn-outline-primary btn-block mb-3 mt-3"
-                data-bs-dismiss="modal">Отправить
+                data-bs-dismiss="modal">Обновить
         </button>
     </div>
 

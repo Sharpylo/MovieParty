@@ -7,28 +7,43 @@
 <div>
     <a class="create" href="{% url 'movie_create' %}">Добавить фильм</a>
 </div>
-<div class="movies">
+
+<div class="row">
     {% if movies %}
-    <div>
-        {% for movie in movies %}
-        <div class="movie_list">
-            <ul>
-                <p>{{ movie.title }}</p>
-                <li>{{ movie.description }}</li>
-                <li>{{ movie.year }}</li>
-                <li>{{ movie.genre }}</li>
-
-                {% if movie.cover_image %}
-                <img src="{{ movie.cover_image.url }}" width="300" height="300" class="" alt="...">
-                {% endif %}
-
+    {% for movie in movies %}
+    <div class="col-3">
+        <p>{{ movie.title }}</p>
+        <p>{{ movie.description }}</p>
+        <p>{{ movie.year }}</p>
+        <p>{{ movie.genre }}</p>
+        {% if movie.cover_image %}
+        <img src="{{ movie.cover_image.url }}" width="100%" height="auto" class="" alt="...">
+        {% endif %}
+        {% if movie.video %}
+        <video width="320" height="240" controls>
+            <source src="{{ movie.video.url }}" type="video/mp4">
+        </video>
+        {% endif %}
+    </div>
+    <div class="col-sm-1 p-3">
+        <div class="btn-group">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+                &equiv;
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="{% url 'movie_update' movie.id %}" class='dropdown-item'>Изменить</a>
+                </li>
+                <li><a href="{% url 'movie_delete' movie.id %}"
+                       onclick="return confirm('Вы уверены, что хотите удалить этот элемент?');"
+                       class='dropdown-item'>Удалить</a></li>
             </ul>
         </div>
-        {% endfor %}
     </div>
+    {% endfor %}
     {% else %}
     <p class="no_films">Фильмов нет.</p>
     {% endif %}
 </div>
+
 
 {% endblock %}
