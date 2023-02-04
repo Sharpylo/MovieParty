@@ -1,0 +1,16 @@
+<div class="chat-container">
+    <h2>Room: {{ room.name }}</h2>
+    <ul class="chat-messages">
+        {% for message in messages %}
+        <li>{{ message.content }}</li>
+        {% endfor %}
+    </ul>
+    <form>
+        <textarea id="message-input"></textarea>
+        <button type="submit">Send</button>
+    </form>
+</div>
+
+<script>
+    // Add JavaScript and Ajax code here to dynamically update the chat messages
+</script>

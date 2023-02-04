@@ -1,5 +1,6 @@
 from django.db import models
 from movieapp.models import Room, Movie
+from django.contrib.auth.models import User
 
 
 # Create your models here.
@@ -12,7 +13,7 @@ class Stream(models.Model):
 
 
 class StreamUser(models.Model):
-    user = models.ForeignKey('userapp.User', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     stream = models.ForeignKey(Stream, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

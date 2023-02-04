@@ -1,3 +1,9 @@
-.movie_list {
-  border-style: solid;
+.col-3 {
+    border: 1px solid #000;
+}
+
+.mx-3 {
+    border-right: 1px solid black;
+    padding-right: 8px;
+    margin-right: 8px;
 }

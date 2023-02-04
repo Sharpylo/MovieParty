@@ -39,9 +39,9 @@ INSTALLED_APPS = [
     "crispy_forms",
     "crispy_bootstrap5",
     'movieapp',
-    'userapp',
     'chatapp',
     'streamapp',
+    "registration",
 ]
 
 MIDDLEWARE = [

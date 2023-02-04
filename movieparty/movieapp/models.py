@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 
 # Create your models here.
@@ -10,6 +11,9 @@ class Movie(models.Model):
     cover_image = models.ImageField(upload_to='covers/', verbose_name='Изображение обложки', null=True, blank=True)
     video = models.FileField(upload_to='videos/', verbose_name='Ссылка на фильм', null=True, blank=True)
 
+    def __str__(self):
+        return self.title
+
 
 class Room(models.Model):
     name = models.CharField(max_length=50, verbose_name='Имя комнаты')
@@ -17,18 +21,8 @@ class Room(models.Model):
     password = models.CharField(max_length=50, verbose_name='Пароль для комнаты', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Время создания')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Время обновления')
+    start_time = models.DateTimeField(null=True, blank=True, verbose_name='Время начала фильма')
+    end_time = models.DateTimeField(null=True, blank=True, verbose_name='Время конца фильма')
 
-
-class Playlist(models.Model):
-    room = models.ForeignKey(Room, on_delete=models.CASCADE)
-    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
-    start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
-
-
-class Comment(models.Model):
-    user = models.ForeignKey('userapp.User', on_delete=models.CASCADE)
-    room = models.ForeignKey(Room, on_delete=models.CASCADE)
-    content = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    def __str__(self):
+        return self.name
