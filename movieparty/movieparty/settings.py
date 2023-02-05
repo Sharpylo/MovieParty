@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'chatapp',
     'streamapp',
     "registration",
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -74,6 +75,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "movieparty.wsgi.application"
+ASGI_APPLICATION = 'movieparty.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
@@ -145,3 +147,17 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 # end MEDIA_ROOT
+
+
+# CHANNEL_LAYERS for Redis
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
+
+# end CHANNEL_LAYERS
