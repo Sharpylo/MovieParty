@@ -11,7 +11,7 @@
 </head>
 
 <body>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+
 <header>
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
         <div class="container-fluid">
@@ -60,52 +60,52 @@
     </nav>
 </header>
 <div class="container-fluid">
-    <main>
-        <div class="container p-5 my-5 border">
-            {% block content %}
-            <!-- Carousel -->
-            <div id="CarouselSlide" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+  <main>
+    <div class="container-fluid p-5 my-5 border">
+      {% block content %}
+        <!-- Carousel -->
+        <div id="CarouselSlide" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+          <!-- Indicators/dots -->
+          <div class="carousel-indicators">
+            {% for movie in movies %}
+              <button type="button" data-bs-target="#CarouselSlide" data-bs-slide-to="{{ forloop.counter0 }}"
+                      {% if forloop.first %}class="active" {% endif %}></button>
+            {% endfor %}
+          </div>
 
-                <!-- Indicators/dots -->
-                <div class="carousel-indicators">
-                    {% for movie in movies %}
-                    <button type="button" data-bs-target="#CarouselSlide" data-bs-slide-to="{{ forloop.counter0 }}"
-                            {% if forloop.first %}class="active" {% endif %}></button>
-                    {% endfor %}
-                </div>
+          <!-- The slideshow/carousel -->
+          <div class="carousel-inner">
+            {% for movie in movies %}
+              <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                {% if movie.cover_image %}
+                  <img src='{{ movie.cover_image.url }}' alt='...' class="d-block w-100"
+                       style="max-width:60%; margin:0 auto;">
+                {% else %}
+                  <div class="d-block w-100" style="background-color:#ccc;"></div>
+                {% endif %}
+              </div>
+            {% endfor %}
+          </div>
 
-                <!-- The slideshow/carousel -->
-                <div class="carousel-inner">
-                    {% for movie in movies %}
-                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                        {% if movie.cover_image %}
-                        <img src='{{ movie.cover_image.url }}' alt='...' class="d-block w-100"
-                             style="max-width:60%; margin:0 auto;">
-                        {% else %}
-                        <div class="d-block w-100" style="background-color:#ccc;"></div>
-                        {% endif %}
-                    </div>
-                    {% endfor %}
-                </div>
-
-                <!-- Left and right controls/icons -->
-                <button class="carousel-control-prev" type="button" data-bs-target="#CarouselSlide"
-                        data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon"></span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#CarouselSlide"
-                        data-bs-slide="next">
-                    <span class="carousel-control-next-icon"></span>
-                </button>
-            </div>
-            {% endblock %}
+          <!-- Left and right controls/icons -->
+          <button class="carousel-control-prev" type="button" data-bs-target="#CarouselSlide"
+                  data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#CarouselSlide"
+                  data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+          </button>
         </div>
-    </main>
+      {% endblock %}
+    </div>
+  </main>
 </div>
 <footer class="footer fixed-bottom">
-    <div class="container p-2 bg-primary text-white">
-        FOOTER
-    </div>
+  <div class="container-fluid p-2 bg-primary text-white">
+    FOOTER
+  </div>
 </footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

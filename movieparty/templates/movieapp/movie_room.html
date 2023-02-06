@@ -3,14 +3,15 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<div class="row">
-    <div class="col-md-8 col-sm-12 p-3 bg-primary text-white">
+
+<div class="row h-100">
+    <div class="col-md-8 col-sm-12 p-3 bg-primary text-white h-100">
         <video id="video" class="w-100 h-100" controls>
             <source src="{{ video.url }}" type="video/mp4">
         </video>
     </div>
-    <div class="col-md-4 col-sm-12 border p-3">
-        {% include "chatapp/chat.html" %}
+    <div class="col-md-4 col-sm-12 border p-3 h-100">
+        {% include "chatapp/chat_room.html" %}
     </div>
 </div>
 
