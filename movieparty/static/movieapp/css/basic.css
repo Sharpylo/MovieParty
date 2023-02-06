@@ -8,10 +8,8 @@
     margin-right: 8px;
 }
 
-
-
-@media (max-width: 576px) {
-    .container {
-        width: 100%;
-    }
+#chatLog, #onlineUsersSelector {
+    height: 300px;
 }
+
+

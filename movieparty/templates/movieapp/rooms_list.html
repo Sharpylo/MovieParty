@@ -11,7 +11,7 @@
     {% if rooms %}
     {% for room in rooms %}
     <div class="col-md-3 col-sm-6 col-12">
-        <a href="{% url 'movie_room' room.id %}">{{ room.name }}</a> - {{ room.created_at }}
+        <a href="{% url 'chat_room_view' room.id %}">{{ room.name }}</a> - {{ room.created_at }}
     </div>
     <div class="col-sm-1 p-3">
         <div class="btn-group">

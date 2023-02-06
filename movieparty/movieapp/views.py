@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 
 from .forms import MovieForm, RoomForm
 from .models import Movie, Room
+from chatapp.models import ChatRoom
 
 
 def room_create(request):
@@ -20,6 +21,8 @@ def room_create(request):
 
 def room_delete(request, item_id):
     item = Room.objects.get(pk=item_id)
+    chat_item = ChatRoom.objects.get(name=item_id)
+    chat_item.delete()
     item.delete()
     return HttpResponseRedirect(reverse_lazy('rooms_list'))
 

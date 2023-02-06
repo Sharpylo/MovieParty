@@ -82,7 +82,7 @@ class ChatConsumer(WebsocketConsumer):
 
         if not self.user.is_authenticated:
             return
-        # -------------------- для обработки линых сообщений --------------------
+        # -------------------- для обработки личных сообщений --------------------
         if message.startswith('/pm '):
             split = message.split(' ', 2)
             target = split[1]
@@ -97,7 +97,7 @@ class ChatConsumer(WebsocketConsumer):
                     'message': target_msg,
                 }
             )
-            # ---------------- end обработки линых сообщений  ----------------
+            # ---------------- end обработки личных сообщений  ----------------
             # send private message delivered to the user
             self.send(json.dumps({
                 'type': 'private_message_delivered',
