@@ -160,4 +160,10 @@ CHANNEL_LAYERS = {
     },
 }
 
-# end CHANNEL_LAYERS
+# end CHANNEL_LAYERS+
+
+# LOGIN
+
+LOGIN_REDIRECT_URL = '/'
+
+# end LOGIN

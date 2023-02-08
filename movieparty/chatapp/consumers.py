@@ -23,23 +23,23 @@ class ChatConsumer(WebsocketConsumer):
         self.user = self.scope['user']
         self.user_inbox = f'inbox_{self.user.username}'
 
-        # connection has to be accepted
+        # соединение должно быть принято
         self.accept()
 
-        # join the room group
+        # присоединиться к группе комнат
         async_to_sync(self.channel_layer.group_add)(
             self.room_group_name,
             self.channel_name,
         )
 
-        # send the user list to the newly joined user
+        # отправить список пользователей вновь присоединившемуся пользователю
         self.send(json.dumps({
             'type': 'user_list',
             'users': [user.username for user in self.room.online.all()],
         }))
 
         if self.user.is_authenticated:
-            # send the join event to the room
+            # отправить событие присоединения в комнату
             async_to_sync(self.channel_layer.group_send)(
                 self.room_group_name,
                 {
@@ -62,7 +62,7 @@ class ChatConsumer(WebsocketConsumer):
         )
 
         if self.user.is_authenticated:
-            # send the leave event to the room
+            # отправьте событие об уходе в комнату
             async_to_sync(self.channel_layer.group_send)(
                 self.room_group_name,
                 {
@@ -88,7 +88,7 @@ class ChatConsumer(WebsocketConsumer):
             target = split[1]
             target_msg = split[2]
 
-            # send private message to the target
+            # отправить личное сообщение цели
             async_to_sync(self.channel_layer.group_send)(
                 f'inbox_{target}',
                 {
@@ -97,16 +97,16 @@ class ChatConsumer(WebsocketConsumer):
                     'message': target_msg,
                 }
             )
-            # ---------------- end обработки личных сообщений  ----------------
-            # send private message delivered to the user
+
+            # отправить личное сообщение пользователю
             self.send(json.dumps({
                 'type': 'private_message_delivered',
                 'target': target,
                 'message': target_msg,
             }))
             return
-
-            # send chat message event to the room
+            # ---------------- end обработки личных сообщений  ----------------
+            # отправить событие сообщения чата в комнату
         async_to_sync(self.channel_layer.group_send)(
             self.room_group_name,
             {

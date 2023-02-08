@@ -59,13 +59,7 @@ def movies_list(request):
     return render(request, 'movieapp/movies_list.html', context=context)
 
 
-def movie_room(request, item_id):
-    item = Room.objects.get(pk=item_id)
-    movie = item.movie
-    return render(request, 'movieapp/movie_room.html', {'item': item, 'video': movie.video})
-
-
-@login_required
+@login_required(login_url='/accounts/login')
 def base_views(request):
     movies = Movie.objects.all()
     context = {'movies': movies}
