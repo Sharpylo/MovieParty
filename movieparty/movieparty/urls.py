@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from streamapp.routing import websocket_urlpatterns
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -24,7 +25,10 @@ urlpatterns = [
     path('', include('movieapp.urls')),
     path('chat/', include('chatapp.urls')),
     path('', include('registration.urls')),
+    path('', include('streamapp.urls')),
 ]
+
+urlpatterns += websocket_urlpatterns
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -9,5 +9,5 @@ def chat_room_view(request, room_name):
     movie = item.movie
     chat_room, created = ChatRoom.objects.get_or_create(name=room_name)
     return render(request, 'chatapp/chat_room.html', {
-        'room': chat_room, 'room_name': item.name, 'video1': movie.video,
+        'room': chat_room, 'room_name': item.name, 'video': movie.video,
     })

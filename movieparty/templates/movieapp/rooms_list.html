@@ -13,6 +13,7 @@
     <div class="col-md-3 col-sm-6 col-12">
         <p>Комната создана - {{ room.created_at }}</p>
         <a href="{% url 'chat_room_view' room.id %}">{{ room.name }}</a>
+        <a href="{% url 'watch_movie' room.id %}">Movie</a>
 
     </div>
 
