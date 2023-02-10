@@ -25,7 +25,7 @@ urlpatterns = [
     path('', include('movieapp.urls')),
     path('chat/', include('chatapp.urls')),
     path('', include('registration.urls')),
-    path('', include('streamapp.urls')),
+    # path('', include('streamapp.urls')),
 ]
 
 urlpatterns += websocket_urlpatterns

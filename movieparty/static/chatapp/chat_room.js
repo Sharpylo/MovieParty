@@ -40,7 +40,7 @@ chatMessageSend.onclick = function () {
     }));
     chatMessageInput.value = "";
 };
-// ___________________2 chast
+// ___________________2 часть
 let chatSocket = null;
 
 function connect() {
