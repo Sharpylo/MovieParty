@@ -83,7 +83,7 @@ function connect() {
                 chatLog.value += "ЛС от " + data.user + ": " + data.message + "\n";
                 break;
             case "private_message_delivered":
-                chatLog.value += "PM to " + data.target + ": " + data.message + "\n";
+                chatLog.value += "ЛС пользователю " + data.target + ": " + data.message + "\n";
                 break;
             default:
                 console.error("Неизвестный тип сообщения!");
