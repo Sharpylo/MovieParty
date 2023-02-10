@@ -30,6 +30,15 @@ class MovieConsumer(AsyncWebsocketConsumer):
                     'time': current_time
                 }
             )
+        elif 'seek' in text_data_json:
+            seek_time = text_data_json['seek']
+            await self.channel_layer.group_send(
+                self.movie_id,
+                {
+                    'type': 'seek',
+                    'time': seek_time
+                }
+            )
         elif 'action' in text_data_json:
             action = text_data_json['action']
             await self.channel_layer.group_send(
@@ -47,6 +56,12 @@ class MovieConsumer(AsyncWebsocketConsumer):
     async def pause(self, event):
         await self.send(text_data=json.dumps({
             'action': 'pause'
+        }))
+
+    async def seek(self, event):
+        time = event['time']
+        await self.send(text_data=json.dumps({
+            'seek': time
         }))
 
     async def sync_time(self, event):

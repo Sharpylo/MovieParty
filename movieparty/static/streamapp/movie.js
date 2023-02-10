@@ -12,6 +12,7 @@ document.addEventListener("click", function () {
 
 socket.onmessage = function (event) {
     const data = JSON.parse(event.data);
+    console.log("Message received: ", event.data);
     if (data.action === "sync") {
         videoElement.currentTime = data.time;
     } else if (data.action === "play") {
@@ -41,13 +42,12 @@ socket.onopen = function () {
     }
     // Отправить сигнал со стороны клиента для получения текущего времени
     socket.send(JSON.stringify({
-        action: "play"
+        action: "request_time"
     }));
 }
 
 // Прослушивание сообщений из сокета
 socket.onmessage = function (event) {
-
     const data = JSON.parse(event.data);
     console.log("Message received: ", event.data);
     if (data.action === "sync") {
@@ -58,6 +58,9 @@ socket.onmessage = function (event) {
         videoElement.pause();
     } else if (data.action === "seek") {
         videoElement.currentTime = data.time;
+    } else if (data.action === "get_current_time") {
+        videoElement.currentTime = data.time;
+        videoElement.play()
     }
 };
 
