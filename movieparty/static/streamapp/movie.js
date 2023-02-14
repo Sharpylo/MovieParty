@@ -6,26 +6,6 @@ const socket = new WebSocket(`ws://${window.location.host}/ws/movie/${movieId}/`
 
 let userInteracted = false;
 
-document.addEventListener("click", function () {
-    userInteracted = true;
-});
-
-socket.onmessage = function (event) {
-    const data = JSON.parse(event.data);
-    console.log("Message received: ", event.data);
-    if (data.action === "sync") {
-        videoElement.currentTime = data.time;
-    } else if (data.action === "play") {
-        if (userInteracted) {
-            videoElement.play();
-        }
-    } else if (data.action === "pause") {
-        videoElement.pause();
-    } else if (data.action === "seek") {
-        videoElement.currentTime = data.time;
-    }
-};
-
 // Прослушивание события изменения времени в видео
 videoElement.ontimeupdate = function () {
     console.log("Time update: ", videoElement.currentTime);
@@ -35,40 +15,11 @@ videoElement.ontimeupdate = function () {
     }));
 };
 
-// Слушать сообщения о подключении
-socket.onopen = function () {
-    if (!document.getElementById('userId')) {
-        return;
-    }
-    // Отправить сигнал со стороны клиента для получения текущего времени
-    socket.send(JSON.stringify({
-        action: "request_time"
-    }));
-}
-
-// Прослушивание сообщений из сокета
-socket.onmessage = function (event) {
-    const data = JSON.parse(event.data);
-    console.log("Message received: ", event.data);
-    if (data.action === "sync") {
-        videoElement.currentTime = data.time;
-    } else if (data.action === "play") {
-        videoElement.play();
-    } else if (data.action === "pause") {
-        videoElement.pause();
-    } else if (data.action === "seek") {
-        videoElement.currentTime = data.time;
-    } else if (data.action === "get_current_time") {
-        videoElement.currentTime = data.time;
-        videoElement.play()
-    }
-};
-
-videoElement.addEventListener("seeked", function () {
+videoElement.addEventListener("seeked", function (event) {
     console.log("Seeked event fired.");
     socket.send(JSON.stringify({
         action: "seek",
-        time: videoElement.currentTime
+        time: event.target.currentTime
     }));
 });
 
@@ -83,3 +34,39 @@ videoElement.addEventListener("play", function () {
         action: "play"
     }));
 });
+
+document.addEventListener("click", function () {
+    userInteracted = true;
+});
+
+// Слушать сообщения о подключении
+socket.onopen = function () {
+    if (!document.getElementById('userId')) {
+        return;
+    }
+    // Отправить сигнал со стороны клиента для получения текущего времени
+    socket.send(JSON.stringify({
+        action: "request_time"
+    }));
+}
+
+socket.onmessage = function (event) {
+    const data = JSON.parse(event.data);
+    console.log("Message received: ", event.data);
+    if (data.action === "sync") {
+        videoElement.currentTime = data.time;
+    } else if (data.action === "play") {
+        if (userInteracted) {
+            videoElement.play();
+        }
+    } else if (data.action === "pause") {
+        videoElement.pause();
+    } else if (data.action === "seek") {
+        videoElement.currentTime = data.time;
+    } else if (data.action === "time") { // действие времени
+        videoElement.currentTime = data.time;
+    } else if (data.action === "get_current_time") {
+        videoElement.currentTime = data.time;
+        videoElement.play(); // проверить с какого момента запускается
+    }
+};

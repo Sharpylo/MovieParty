@@ -12,15 +12,18 @@ class MovieConsumer(AsyncWebsocketConsumer):
             self.movie_id,
             self.channel_name
         )
+        print("Connected to movie", self.movie_id)
 
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(
             self.movie_id,
             self.channel_name
         )
+        print("Disconnected from movie", self.movie_id)
 
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
+        print("Received message:", text_data)
         if 'time' in text_data_json:
             current_time = text_data_json['time']
             await self.channel_layer.group_send(
@@ -31,12 +34,12 @@ class MovieConsumer(AsyncWebsocketConsumer):
                 }
             )
         elif 'seek' in text_data_json:
-            seek_time = text_data_json['seek']
+            action = text_data_json['action']
             await self.channel_layer.group_send(
                 self.movie_id,
                 {
                     'type': 'seek',
-                    'time': seek_time
+                    'time': action
                 }
             )
         elif 'action' in text_data_json:
@@ -61,7 +64,15 @@ class MovieConsumer(AsyncWebsocketConsumer):
     async def seek(self, event):
         time = event['time']
         await self.send(text_data=json.dumps({
-            'seek': time
+            'action': 'seek',
+            'time': time
+        }))
+
+        # Преобразование времени в плавающее значение и установка текущего времени видео
+        time_float = float(time)
+        await self.send(text_data=json.dumps({
+            'action': 'seek',
+            'time': time_float
         }))
 
     async def sync_time(self, event):

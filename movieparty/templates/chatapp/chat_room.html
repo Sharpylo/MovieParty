@@ -11,6 +11,7 @@
             <video preload="auto" id="movie" class="w-100 h-100" controls>
                 <source src="{{ movie.url }}" type="video/mp4">
             </video>
+
             {{ movie_id|json_script:"movieId" }}
 
         </li>
@@ -44,5 +45,6 @@
 </div>
 <script src="{% static 'chatapp/chat_room.js' %}"></script>
 <script src="{% static 'streamapp/movie.js' %}"></script>
+
 
 {% endblock %}

@@ -12,4 +12,149 @@
     height: 300px;
 }
 
+/*карточка фильма*/
 
+.card {
+    position: relative;
+    display: inline-block;
+    border: 1px solid black; /* or any other color and thickness you prefer */
+    box-shadow: none; /* set initial box shadow to none */
+    transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* add transitions for smoother effects */
+    margin-top: 15px;
+}
+
+.card:hover {
+    border-color: white; /* set border color to white on hover */
+    box-shadow: 0 0 10px white; /* add a white glow effect */
+}
+
+.card img {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+    transition: filter 0.3s ease-in-out;
+}
+
+.card:hover img {
+    filter: blur(5px);
+    transform: scale(1.1);
+}
+
+.card .top-text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.card:hover .top-text {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.card .bottom-text {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: pre-wrap;
+    max-width: 100ch;
+}
+
+.card:hover .bottom-text {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.card .bottom-text a {
+    display: block;
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: white;
+    text-decoration: none;
+}
+
+.card .bottom-text a:hover {
+    text-decoration: underline;
+    transform: scale(1.1);
+}
+
+/*end карточка фильма*/
+
+/*жанр*/
+
+.genre-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+
+}
+
+.genre-container a {
+    display: inline-block;
+    padding: 5px 10px;
+    margin: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #333;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.genre-container a:hover {
+    background-color: #333;
+    color: #fff;
+    transform: scale(1.1);
+}
+
+.movie-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.movie-box {
+    width: 300px;
+    margin: 10px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    text-align: center;
+}
+
+.movie-box h6 {
+    margin-top: 0;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.movie-box p {
+    margin-bottom: 0;
+    font-size: 14px;
+}
+
+/*конец жанр*/

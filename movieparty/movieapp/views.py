@@ -4,10 +4,11 @@ from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 
 from .forms import MovieForm, RoomForm
-from .models import Movie, Room
+from .models import Movie, Room, Genre
 from chatapp.models import ChatRoom
 
 
+@login_required(login_url='/accounts/login')
 def room_create(request):
     if request.method == 'POST':
         form = RoomForm(request.POST)
@@ -19,6 +20,7 @@ def room_create(request):
     return render(request, 'movieapp/room_create.html', {'form': form})
 
 
+@login_required(login_url='/accounts/login')
 def room_delete(request, item_id):
     item = Room.objects.get(pk=item_id)
     chat_item = ChatRoom.objects.get(name=item_id)
@@ -27,6 +29,7 @@ def room_delete(request, item_id):
     return HttpResponseRedirect(reverse_lazy('rooms_list'))
 
 
+@login_required(login_url='/accounts/login')
 def room_update(request, item_id):
     instance = get_object_or_404(Room, id=item_id)
     form = RoomForm(request.POST or None, instance=instance)
@@ -36,6 +39,7 @@ def room_update(request, item_id):
     return render(request, 'movieapp/room_update.html', {'form': form})
 
 
+@login_required(login_url='/accounts/login')
 def rooms_list(request):
     rooms = Room.objects.all()
     context = {'rooms': rooms}
@@ -55,8 +59,31 @@ def movie_create(request):
 
 def movies_list(request):
     movies = Movie.objects.all()
-    context = {'movies': movies}
+    genre = Genre.objects.all()
+    context = {'movies': movies, 'genres': genre}
     return render(request, 'movieapp/movies_list.html', context=context)
+
+
+def movies_card(request, item_id):
+    movie = Movie.objects.get(pk=item_id)
+    link_trailer = 'https://www.youtube.com/embed/' + movie.trailer.split('/')[-1]
+    return render(request, 'movieapp/movies_card.html', {'movie': movie, 'trailer': link_trailer})
+
+
+def movie_search(request):
+    query = request.GET.get('q')
+    movies = Movie.objects.filter(title__icontains=query)
+    return render(request, 'movieapp/movies_list.html', {'movies': movies})
+
+
+def movie_filter(request):
+    if request.method == "GET":
+        genre_name = request.GET.get("genre")
+        if genre_name:
+            movies = Movie.objects.filter(genre__name=genre_name)
+        else:
+            movies = Movie.objects.all()
+        return render(request, "movieapp/movies_list.html", {"movies": movies, "selected_genre": genre_name})
 
 
 @login_required(login_url='/accounts/login')
