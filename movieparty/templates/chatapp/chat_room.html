@@ -8,18 +8,19 @@
 <div class="container-chat">
     <div class="row">
         <div class="col-sm-9 video">
-            <video preload="auto" id="movie" class="w-100 h-100" controls>
-                <source src="{{ movie.url }}" type="video/mp4">
-            </video>
 
+            <video preload="auto" id="movie" class="w-100 h-100" controls>
+                <source src="{{ room_video.movie_url }}" type="video/mp4">
+            </video>
             {{ movie_id|json_script:"movieId" }}
+
+
         </div>
         <div class="col-sm-3 chat">
             <div class="btn-group chat-b">
                 <button type="button" class="btn btn-primary chat-b" id="showMessageContainer">Чат</button>
                 <button type="button" class="btn btn-primary chat-b-" id="showUserListContainer">Онлайн</button>
             </div>
-
             <div class="flex-fill d-flex flex-column">
                 <div class="mb-2">
                     <div id="messageContainer">
@@ -40,14 +41,40 @@
                     {{ room.name|json_script:"roomName" }}
                 </div>
             </div>
-
-
         </div>
+    </div>
+    <div>
+        <form method="POST">
+            {% csrf_token %}
+            <select id="movieSelector" class="form-control mb-2">
+                {% for movie in movies %}
+                <option value="{{ movie.video.url }}">{{ movie.title }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn btn-primary">Выбрать</button>
+            <input type="hidden" name="movie_url" id="movieUrlInput">
+        </form>
+
     </div>
 </div>
 
 <script src="{% static 'chatapp/chat_room.js' %}"></script>
 <script src="{% static 'streamapp/movie.js' %}"></script>
+<script>
+    // получаем элемент video и input с URL-адресом видео
+    var video = document.getElementById("movie");
+    var movieUrlInput = document.getElementById("movieUrlInput");
+    var movieSelector = document.getElementById("movieSelector");
 
 
+    // добавляем обработчик события изменения значения в select
+    movieSelector.addEventListener("change", function () {
+        // устанавливаем новое значение URL-адреса видео в input
+        movieUrlInput.value = movieSelector.value;
+
+        // обновляем video с новым URL-адресом
+        video.src = movieSelector.value;
+        video.load();
+    });
+</script>
 {% endblock %}

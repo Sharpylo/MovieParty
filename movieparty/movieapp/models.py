@@ -1,5 +1,7 @@
 from django.db import models
+from django.contrib.auth.hashers import make_password, check_password
 from django.utils.html import format_html
+from django.contrib.auth.models import User
 
 
 class Genre(models.Model):
@@ -55,12 +57,27 @@ class Movie(models.Model):
 
 class Room(models.Model):
     name = models.CharField(max_length=50, verbose_name='Имя комнаты')
-    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, verbose_name='Название фильма')
-    password = models.CharField(max_length=50, verbose_name='Пароль для комнаты', null=True, blank=True)
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, verbose_name='Название фильма', null=True, blank=True)
+    movie_url = models.CharField(max_length=50, verbose_name='URL фильма', null=True, blank=True)
+    has_password = models.BooleanField(default=False, verbose_name='Требуется пароль')
+    password = models.CharField(max_length=128, blank=True, verbose_name='Пароль для комнаты (зашифрованный)',
+                                help_text='Оставьте пустым, если пароль не требуется')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Время создания')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Время обновления')
     start_time = models.DateTimeField(null=True, blank=True, verbose_name='Время начала фильма')
     end_time = models.DateTimeField(null=True, blank=True, verbose_name='Время конца фильма')
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+
+    def set_password(self, raw_password):
+        self.password = make_password(raw_password)
+        self.has_password = True
+        self.save()
+
+    def check_password(self, raw_password):
+        return check_password(raw_password, self.password)
+
+    def can_edit(self, user):
+        return user == self.created_by
 
     def __str__(self):
         return self.name

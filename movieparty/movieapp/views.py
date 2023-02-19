@@ -1,4 +1,4 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden
 from django.shortcuts import render, reverse, get_object_or_404
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
@@ -17,8 +17,10 @@ def room_create(request):
     if request.method == 'POST':
         form = RoomForm(request.POST)
         if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('rooms_list'))  # исправлено: reverse_lazy -> reverse
+            room = form.save(commit=False)
+            room.created_by = request.user
+            room.save()
+            return HttpResponseRedirect(reverse('rooms_list'))
     else:
         form = RoomForm()
     return render(request, 'movieapp/room_create.html', {'form': form})
@@ -27,23 +29,24 @@ def room_create(request):
 @login_required(login_url='/accounts/login')
 def room_delete(request, item_id):
     try:
-        item = Room.objects.get(pk=item_id)
-        chat_item, created = ChatRoom.objects.get_or_create(name=str(item_id))
-        chat_item.delete()
-        item.delete()
-        return HttpResponseRedirect(reverse_lazy('rooms_list'))
+        room = Room.objects.get(pk=item_id)
+        if not room.can_edit(request.user):
+            return HttpResponseForbidden('Вы не уполномочены выполнять это действие')
+        room.delete()
+        return HttpResponseRedirect(reverse('rooms_list'))
     except Room.DoesNotExist:
-        # обработать случай, когда комната не существует
-        return HttpResponse('Room does not exist', status=404)
+        return HttpResponse('Комната не существует', status=404)
 
 
 @login_required(login_url='/accounts/login')
 def room_update(request, item_id):
-    instance = get_object_or_404(Room, id=item_id)
-    form = RoomForm(request.POST or None, instance=instance)
+    room = get_object_or_404(Room, id=item_id)
+    if not room.can_edit(request.user):
+        return HttpResponseForbidden('Вы не авторизованы для выполнения этого действия')
+    form = RoomForm(request.POST or None, instance=room)
     if form.is_valid():
         form.save()
-        return HttpResponseRedirect(reverse_lazy('rooms_list'))
+        return HttpResponseRedirect(reverse('rooms_list'))
     return render(request, 'movieapp/room_update.html', {'form': form})
 
 
