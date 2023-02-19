@@ -2,10 +2,17 @@ console.log("Sanity check from chat_room.js.");
 
 const roomName = JSON.parse(document.getElementById('roomName').textContent);
 
+const showMessageContainerButton = document.getElementById('showMessageContainer');
+const showUserListContainerButton = document.getElementById('showUserListContainer');
+const messageContainer = document.getElementById('messageContainer');
+const userListContainer = document.getElementById('userListContainer');
+
+
 let chatLog = document.querySelector("#chatLog");
 let chatMessageInput = document.querySelector("#chatMessageInput");
 let chatMessageSend = document.querySelector("#chatMessageSend");
 let onlineUsersSelector = document.querySelector("#onlineUsersSelector");
+
 
 // добавляет новую опцию в 'onlineUsersSelector'
 function onlineUsersSelectorAdd(value) {
@@ -108,3 +115,26 @@ onlineUsersSelector.onchange = function () {
     onlineUsersSelector.value = null;
     chatMessageInput.focus();
 };
+
+
+// кнопки в чате
+showMessageContainerButton.addEventListener('click', () => {
+    messageContainer.style.display = 'block';
+    userListContainer.style.display = 'none';
+});
+
+showUserListContainerButton.addEventListener('click', () => {
+    messageContainer.style.display = 'none';
+    userListContainer.style.display = 'block';
+});
+// Добавление слушателя события щелчка для элемента выбора пользователя онлайн
+onlineUsersSelector.addEventListener('click', (event) => {
+    // Проверьте, является ли щелкнутый элемент элементом опции
+    if (event.target.nodeName === 'OPTION') {
+        // Переключитесь обратно на вкладку чата
+        showMessageContainerButton.click();
+    }
+});
+
+// Чат
+

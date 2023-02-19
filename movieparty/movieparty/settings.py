@@ -36,12 +36,13 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "crispy_forms",
-    "crispy_bootstrap5",
+    'rest_framework',
+    'crispy_forms',
+    'crispy_bootstrap5',
     'movieapp',
     'chatapp',
     'streamapp',
-    "registration",
+    'registration',
     'channels',
 ]
 

@@ -1,0 +1,40 @@
+<!-- Карусель -->
+
+<div id="CarouselSlide" class="carousel slide d-block" data-bs-ride="carousel" data-bs-interval="5000">
+    <!-- Индикаторы/точки  -->
+    <div class="carousel-indicators">
+        {% for movie in movies %}
+        <button type="button" data-bs-target="#CarouselSlide" data-bs-slide-to="{{ forloop.counter0 }}"
+                {% if forloop.first %}class="active" {% endif %}></button>
+        {% endfor %}
+    </div>
+
+    <!-- Слайд-шоу/карусель -->
+    <div class="carousel-inner container-fluid">
+        {% for movie in movies %}
+        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+            {% if movie.roundabout_image %}
+            <!-- Показывайте изображение roundabout_image на маленьких экранах, а изображение cover_image - на больших. -->
+            <picture>
+                <source media="(max-width: 768px)" srcset="{{ movie.cover_image.url }}">
+                <source media="(min-width: 769px)" srcset="{{ movie.roundabout_image.url }}">
+                <img src="{{ movie.roundabout_image.url }}" alt="{{ movie.title }}">
+            </picture>
+            {% else %}
+            <div class="d-block" style="background-color:#ccc;"></div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+
+
+    <!-- Левый и правый элементы управления/иконки -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#CarouselSlide"
+            data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#CarouselSlide"
+            data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+    </button>
+</div>

@@ -8,12 +8,20 @@ class Genre(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = 'Жанр'
+        verbose_name_plural = 'Жанры'
+
 
 class Country(models.Model):
     name = models.CharField(max_length=50, verbose_name='Название страны')
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = 'Страна'
+        verbose_name_plural = 'Страны'
 
 
 class Movie(models.Model):
@@ -23,6 +31,8 @@ class Movie(models.Model):
     country = models.ManyToManyField(Country, verbose_name='Страны', related_name='movies')
     genre = models.ManyToManyField(Genre, verbose_name='Жанры', related_name='movies')
     cover_image = models.ImageField(upload_to='covers/', verbose_name='Изображение обложки', null=True, blank=True)
+    roundabout_image = models.ImageField(upload_to='covers/', verbose_name='Изображение для карусели', null=True,
+                                         blank=True)
     video = models.FileField(upload_to='videos/', verbose_name='Файл фильма', null=True, blank=True)
     trailer = models.TextField(verbose_name='Трейлер', null=True, blank=True)
     link_movie = models.TextField(verbose_name='Ссылка на фильм', null=True, blank=True)
@@ -54,3 +64,7 @@ class Room(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = 'Комната'
+        verbose_name_plural = 'Комнаты'

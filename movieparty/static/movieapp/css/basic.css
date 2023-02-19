@@ -1,54 +1,120 @@
-.col-3 {
-    border: 1px solid #000;
+html, body {
+    height: 100%;
 }
 
-.mx-3 {
-    border-right: 1px solid black;
-    padding-right: 8px;
-    margin-right: 8px;
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
 }
 
-#chatLog, #onlineUsersSelector {
-    height: 300px;
+:root {
+    --index: calc(1vw + 1vh);
+    --color-header: #c29545;
+    --color-text: #cdbea7;
 }
+
+@font-face {
+    font-family: raleway-c;
+    src: url(../fonts/raleway-regular.woff2) format('woff2');
+}
+
+@font-face {
+    font-family: outfit-c;
+    src: url(../fonts/outfit-regular.woff2) format('woff2');
+}
+
+body {
+    background-image: url(../img/bg.jpg);
+    background-size: 50px;
+    color: #fafafa;
+    font-family: raleway-c;
+}
+
+
+/*навигационная панель*/
+
+.navbar-brand {
+    padding-left: 10vw; /* Измените значение, чтобы настроить отступ */
+    font-size: 24px;
+    color: #edb989;
+}
+
+.nav-link {
+    color: var(--color-text);
+}
+
+.d-flex .list-group-item span {
+    margin-right: 10vw;
+    color: var(--color-header);
+}
+
+/*карусель*/
+
+/* Use the roundabout image by default */
+.my-carousel .carousel-item img {
+    object-fit: cover;
+    width: calc(var(--index) * 45);
+    height: 400px;
+    display: block;
+    margin: 0 auto;
+}
+
+/* Use the cover image on screens smaller than 768px */
+@media (max-width: 768px) {
+    .my-carousel .carousel-item img {
+        object-fit: cover;
+        --bs-aspect-ratio: 2/3;
+        width: 100%;
+        height: 100%;
+        display: block;
+        margin: 0 auto;
+    }
+}
+
+/* конец карусель*/
+
 
 /*карточка фильма*/
 
 .card {
     position: relative;
     display: inline-block;
-    border: 1px solid black; /* or any other color and thickness you prefer */
-    box-shadow: none; /* set initial box shadow to none */
-    transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* add transitions for smoother effects */
+    border: 2px solid var(--color-header);
+    box-shadow: none;
+    transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
     margin-top: 15px;
 }
 
 .card:hover {
-    border-color: white; /* set border color to white on hover */
-    box-shadow: 0 0 10px white; /* add a white glow effect */
+    border-color: white;
+    box-shadow: 0 0 10px white;
 }
 
 .card img {
     display: block;
     max-width: 100%;
     max-height: 100%;
+    aspect-ratio: 2/3;
     object-fit: cover;
     transition: filter 0.3s ease-in-out;
 }
 
 .card:hover img {
-    filter: blur(5px);
+    filter: blur(10px);
     transform: scale(1.1);
 }
 
 .card .top-text {
     position: absolute;
-    top: 0;
+    top: 50%;
     left: 0;
     right: 0;
+    margin-top: -25%;
     padding: 20px;
     background-color: rgba(0, 0, 0, 0.8);
-    color: white;
+    color: var(--color-header);
     text-align: center;
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
@@ -59,43 +125,19 @@
     transform: scale(1.1);
 }
 
-.card .bottom-text {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 20px;
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white;
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: pre-wrap;
-    max-width: 100ch;
+/* Установите контейнер для использования макета flexbox */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30vh; /* Установите высоту контейнера, чтобы заполнить область просмотра*/
 }
 
-.card:hover .bottom-text {
-    opacity: 1;
-    transform: scale(1.1);
-}
-
-.card .bottom-text a {
-    display: block;
-    max-width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: white;
-    text-decoration: none;
-}
-
-.card .bottom-text a:hover {
-    text-decoration: underline;
-    transform: scale(1.1);
+/* Style the "Фильмов нет." heading */
+.no_films {
+    text-align: center;
+    font-size: 24px;
+    color: var(--color-text);
 }
 
 /*end карточка фильма*/
@@ -111,14 +153,30 @@
 
 }
 
+@media screen and (max-width: 600px) {
+    .genre-container {
+        display: none;
+    }
+
+    #show-genres-btn {
+        display: block;
+    }
+}
+
+@media screen and (min-width: 601px) {
+    #show-genres-btn {
+        display: none;
+    }
+}
+
 .genre-container a {
     display: inline-block;
     padding: 5px 10px;
     margin: 5px 10px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--color-header);
     border-radius: 5px;
     text-decoration: none;
-    color: #333;
+    color: var(--color-text);
     font-size: 14px;
     transition: all 0.3s ease;
 }
@@ -157,4 +215,123 @@
     font-size: 14px;
 }
 
+.bottom-genre {
+    width: 75vw;
+    border: 1px solid var(--color-header);
+    color: var(--color-text);
+    margin: 0 auto;
+}
+
+.bottom-genre:hover {
+    background-color: #999;
+    border: 1px solid #999;
+    color: #4f4d4d;
+}
+
+
 /*конец жанр*/
+
+/*поиск*/
+
+.search {
+    width: 80vw;
+    margin: 0 auto;
+}
+
+.search input[type="text"] {
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid var(--color-header);
+    color: var(--color-text);
+}
+
+.search button {
+    background-color: transparent;
+    border: 1px solid var(--color-header);
+    color: var(--color-text);
+}
+
+.search button:hover {
+    background-color: var(--color-header);
+    color: #ffffff;
+}
+
+
+/*конец поиск*/
+
+/*карточка фильма*/
+
+.bg-primary {
+    background-color: #007bff;
+}
+
+.bg-dark {
+    background-color: #343a40;
+}
+
+.text-white {
+    color: #fff;
+}
+
+.card-movie {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+
+}
+
+/*конец карточки фильма*/
+
+/*чат*/
+
+#chatLog, #onlineUsersSelector, select, textarea, input {
+    background-color: transparent;
+    border: 1px solid var(--color-header);
+    color: var(--color-text);
+    font-size: 16px;
+    padding: 5px;
+}
+
+#chatLog, #onlineUsersSelector {
+    height: calc(var(--index) * 20);
+}
+
+#chatMessageSend {
+    background-color: transparent;
+    border: 1px solid var(--color-header);
+    color: var(--color-text);
+}
+
+.chat-b {
+    width: 50%;
+}
+
+.chat-b- {
+    width: 50%;
+    border-left: none;
+}
+
+select:hover, textarea:hover, input:hover {
+    background-color: var(--color-text);
+}
+
+.chat-b, .chat-b- {
+    background-color: transparent;
+    border: 1px solid var(--color-header);
+    color: var(--color-text);
+    width: 100%;
+}
+
+input[type="text"] {
+    background-color: transparent;
+    border: 1px solid var(--color-header);
+    color: var(--color-text);
+    font-size: 16px;
+    padding: 5px;
+}
+
+input[type="text"]:hover {
+    background-color: var(--color-text);
+}
+
+/*конец чат*/

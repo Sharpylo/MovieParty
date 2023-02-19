@@ -12,13 +12,14 @@
             <button class="btn btn-outline-primary" type="submit">Поиск</button>
         </form>
     </div>
+    <button id="show-genres-btn" class="btn btn-outline-primary bottom-genre">Показать жанры</button>
     <div class="genre-container">
         {% for genre in genres %}
         <a href="{% url 'movie_filter' %}?genre={{ genre.name }}">{{ genre.name }}</a>
         {% endfor %}
     </div>
     {% if selected_genre %}
-    <h2>Выбранный жанр: {{ selected_genre }}</h2>
+    <h2 class="no_films">Выбранный жанр: {{ selected_genre }}</h2>
     {% endif %}
     {% if movies %}
     {% for movie in movies %}
@@ -27,16 +28,29 @@
             <a href="{% url 'movies_card' movie.id %}">
                 <img src="{{ movie.cover_image.url }}" width="100%" height="auto" alt="{{ movie.title }}">
                 <div class="top-text">{{ movie.title }}</div>
-                <div class="bottom-text">{{ movie.description }}</div>
             </a>
         </div>
     </div>
     {% endfor %}
     {% else %}
     <br>
-    <h2 class="no_films">Фильмов нет.</h2>
+    <div class="container">
+        <h2 class="no_films">Фильмов нет.</h2>
+    </div>
     {% endif %}
 </div>
 
+<script>
+    const showGenresBtn = document.getElementById('show-genres-btn');
+    const genreContainer = document.querySelector('.genre-container');
+
+    showGenresBtn.addEventListener('click', function () {
+        if (genreContainer.style.display === 'none') {
+            genreContainer.style.display = 'flex';
+        } else {
+            genreContainer.style.display = 'none';
+        }
+    });
+</script>
 
 {% endblock %}
