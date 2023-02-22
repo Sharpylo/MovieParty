@@ -9,6 +9,13 @@ from .models import ChatRoom
 
 @login_required
 def check_password(request, room_id):
+    """
+        Проверяет пароль для входа в комнату чата.
+
+        Если пользователь авторизован и введенный пароль совпадает с паролем комнаты, то
+        происходит перенаправление на страницу чата. В противном случае отображается сообщение
+        об ошибке.
+    """
     room = get_object_or_404(Room, id=room_id)
     if request.method == 'POST':
         password = request.POST.get('password')
@@ -20,27 +27,31 @@ def check_password(request, room_id):
     return render(request, 'chatapp/check_password.html', context)
 
 
-def chat_room_view(request, room_name):
-    room = get_object_or_404(Room, pk=room_name)
-    movies = Movie.objects.all()
-    chat_room, created = ChatRoom.objects.get_or_create(name=room_name)
-
+def _handle_post_request(request, room, room_name):
+    """
+    Функция для обработки POST-запросов для chat_room_view
+    """
     if request.method == 'POST':
         if request.user == room.created_by:
             movie_url = request.POST.get('movie_url')
             if movie_url:
-                # сохраняем выбранный фильм в базе данных
                 room.movie_url = movie_url
                 room.save()
         else:
             return HttpResponseForbidden()
 
-    if request.user == room.created_by:
-        is_owner = True
-    else:
-        is_owner = False
 
-    # передаем данные о фильме на страницу
+def chat_room_view(request, room_name):
+    """
+    Главная функция для отображения комнаты чата.
+    """
+    room = get_object_or_404(Room, pk=room_name)
+    chat_room, created = ChatRoom.objects.get_or_create(name=room_name)
+    movies = Movie.objects.all()
+
+    _handle_post_request(request, room, room_name)
+    is_owner = request.user == room.created_by
+
     return render(request, 'chatapp/chat_room.html', {
         'room': chat_room,
         'room_video': room,

@@ -22,6 +22,3 @@ class CheckPasswordViewTest(TestCase):
         response = self.client.post(reverse('check_password', args=[self.room.id]), {'password': 'wrongpassword'})
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Неверный пароль')
-
-
-

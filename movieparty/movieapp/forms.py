@@ -1,6 +1,5 @@
 from django import forms
 from .models import Movie, Room
-from datetime import datetime, timedelta
 
 
 class MovieForm(forms.ModelForm):
@@ -12,4 +11,4 @@ class MovieForm(forms.ModelForm):
 class RoomForm(forms.ModelForm):
     class Meta:
         model = Room
-        fields = ['name', 'password']
+        fields = ['name', 'has_password', 'password']
