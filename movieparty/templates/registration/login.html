@@ -4,30 +4,32 @@
 
 {% block content %}
 
-{% if form.errors %}
-<p>Ваше имя пользователя и пароль не совпали. Пожалуйста, попробуйте еще раз.</p>
-{% endif %}
+<div style="text-align: center;">
+    {% if form.errors %}
+    <p class="login-p">Ваше имя пользователя и пароль не совпали. Пожалуйста, попробуйте еще раз.</p>
+    {% endif %}
 
-{% if next %}
-{% if user.is_authenticated %}
-<p>Ваша учетная запись не имеет доступа к этой странице. Чтобы продолжить,
-    пожалуйста, войдите в систему с учетной записью, у которой есть доступ.</p>
-{% else %}
-<p>Пожалуйста, войдите в систему, чтобы увидеть эту страницу.</p>
-{% endif %}
-{% endif %}
+    {% if next %}
+    {% if user.is_authenticated %}
+    <p class="login-p">Ваша учетная запись не имеет доступа к этой странице. Чтобы продолжить,
+        пожалуйста, войдите в систему с учетной записью, у которой есть доступ.</p>
+    {% else %}
+    <p class="login-p">Пожалуйста, войдите в систему, чтобы увидеть эту страницу.</p>
+    {% endif %}
+    {% endif %}
+</div>
 
-<div class="container p-5 my-5 border">
+<div class="container p-5 my-5">
     <form method="post" action="{% url 'login' %}">
         {% csrf_token %}
-        <div class="container">
+        <div class="container-login">
             <form method="post">
                 {% csrf_token %}
                 {{ form | crispy }}
                 <p><a href="{% url 'sign_up' %}" class="nav-link">Регистрация</a></p>
                 <p><a href="{% url 'password_reset' %}" class="nav-link">Потеряли пароль?</a></p>
                 <div class="d-grid">
-                    <button type="submit" class="btn btn-outline-primary btn-block mb-3 mt-3"> Вход</button>
+                    <button type="submit" class="btn btn-outline-primary btn-block mb-3 mt-3">Вход</button>
                 </div>
             </form>
         </div>
@@ -35,7 +37,6 @@
     </form>
 
 </div>
-
 
 
 {% endblock %}

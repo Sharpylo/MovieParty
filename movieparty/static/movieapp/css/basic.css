@@ -9,6 +9,17 @@ html, body {
     box-sizing: border-box;
 }
 
+body {
+    background-image: url(../img/bg.jpg);
+    background-size: 50px;
+    color: #fafafa;
+    font-family: raleway-c;
+}
+
+.theme-dark {
+
+}
+
 :root {
     --index: calc(1vw + 1vh);
     --color-header: #c29545;
@@ -23,13 +34,6 @@ html, body {
 @font-face {
     font-family: outfit-c;
     src: url(../fonts/outfit-regular.woff2) format('woff2');
-}
-
-body {
-    background-image: url(../img/bg.jpg);
-    background-size: 50px;
-    color: #fafafa;
-    font-family: raleway-c;
 }
 
 
@@ -335,3 +339,53 @@ input[type="text"]:hover {
 }
 
 /*конец чат*/
+
+/*видео проигрыватель*/
+
+.video {
+    padding: 0;
+}
+
+/* конец видео проигрыватель*/
+
+/*логин, регистрация*/
+.login-p {
+    font-size: 20px;
+}
+
+/* конец логин, регистрация*/
+
+/*список комнат*/
+.room-wrapper {
+    border: 2px solid var(--color-header);
+    padding: 10px;
+    text-align: center;
+}
+
+.room-link {
+    display: inline-block;
+    padding: 5px;
+    border: 1px solid var(--color-text);
+    background-color: transparent;
+    text-decoration: none;
+    color: var(--color-text);
+}
+
+.room-link:hover {
+    background-color: var(--color-header);
+}
+
+div.create {
+    text-align: center;
+}
+
+.create a {
+    display: inline-block;
+    padding: 10px 20px;
+    border: 1px solid var(--color-header);
+    text-decoration: none;
+    color: var(--color-text);
+}
+
+
+/*конец список комнат*/

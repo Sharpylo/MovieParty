@@ -38,6 +38,15 @@ class ChatConsumer(WebsocketConsumer):
             'users': [user.username for user in self.room.online.all()],
         }))
 
+        # отправить последние сообщения комнаты
+        last_messages = Message.objects.filter(room=self.room).order_by('-timestamp')[:20]
+        for message in last_messages[::-1]:
+            self.send(json.dumps({
+                'type': 'chat_message',
+                'user': message.user.username,
+                'message': message.content,
+            }))
+
         if self.user.is_authenticated:
             # отправить событие присоединения в комнату
             async_to_sync(self.channel_layer.group_send)(
@@ -77,11 +86,20 @@ class ChatConsumer(WebsocketConsumer):
             self.room.online.remove(self.user)
 
     def receive(self, text_data=None, bytes_data=None):
+        MAX_MESSAGES = 100
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
 
         if not self.user.is_authenticated:
             return
+
+        # Проверьте, достигло ли количество сообщений предела MAX_MESSAGES
+        message_count = Message.objects.filter(room=self.room).count()
+        if message_count >= MAX_MESSAGES:
+            # Remove the oldest message
+            oldest_message = Message.objects.filter(room=self.room).order_by('timestamp').first()
+            oldest_message.delete()
+            print("Removed message")
         # -------------------- для обработки личных сообщений --------------------
         if message.startswith('/pm '):
             split = message.split(' ', 2)

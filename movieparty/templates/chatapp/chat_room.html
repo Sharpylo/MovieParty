@@ -6,15 +6,13 @@
 {% block content %}
 
 <div class="container-chat">
+    <h3> Название комнаты - {{ room_name }} </h3>
     <div class="row">
         <div class="col-sm-9 video">
-
             <video preload="auto" id="movie" class="w-100 h-100" controls>
                 <source src="{{ room_video.movie_url }}" type="video/mp4">
             </video>
             {{ movie_id|json_script:"movieId" }}
-
-
         </div>
         <div class="col-sm-3 chat">
             <div class="btn-group chat-b">
@@ -43,19 +41,39 @@
             </div>
         </div>
     </div>
-    <div>
-        <form method="POST">
-            {% csrf_token %}
-            <select id="movieSelector" class="form-control mb-2">
+    <div class="row">
+        <div class="col-sm-9 filmSelector">
+            {% if is_owner == True %}
+            <form method="POST">
+                {% csrf_token %}
+                <br>
+                <h3>Выберете фильм: </h3>
+                <select id="movieSelector" class="form-control mb-2">
+                    {% for movie in movies %}
+                    <option value="{{ movie.video.url }}"
+                            {% if selected_movie_url == movie.video.url %}selected{% endif %}>
+                        {{ movie.title }}
+                    </option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="btn btn-primary">Выбрать</button>
+                <input type="hidden" name="movie_url" id="movieUrlInput">
+            </form>
+            {% else %}
+            <br>
+            <h3>Выбранный фильм: </h3>
+            <select id="movieSelector" class="form-control mb-2" disabled>
                 {% for movie in movies %}
-                <option value="{{ movie.video.url }}">{{ movie.title }}</option>
+                {% if movie.video.url == selected_movie_url %}
+                <option value="{{ selected_movie_url }}" selected>{{ movie.title }}</option>
+                {% endif %}
                 {% endfor %}
             </select>
-            <button type="submit" class="btn btn-primary">Выбрать</button>
-            <input type="hidden" name="movie_url" id="movieUrlInput">
-        </form>
-
+            {% endif %}
+        </div>
+        <div class="col-sm-3"><br><h3>Поделиться комнатой в: </h3></div>
     </div>
+
 </div>
 
 <script src="{% static 'chatapp/chat_room.js' %}"></script>
