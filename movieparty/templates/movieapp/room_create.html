@@ -3,15 +3,41 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<form method="post" class="create-room-form" action="{% url 'room_create' %}">
-    {% csrf_token %}
-    {{ form|crispy }}
-    <div class="d-grid">
-        <button type="submit" class="btn btn-outline-primary btn-block mb-3 mt-3"
-                data-bs-dismiss="modal">Отправить
-        </button>
-    </div>
+<div class="container">
+    <form method="post" class="create-room-form" action="{% url 'room_create' %}">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <div class="d-grid">
+            <button type="submit" class="btn btn-outline-primary btn-block mb-3 mt-3"
+                    data-bs-dismiss="modal">Отправить
+            </button>
+        </div>
+    </form>
+</div>
 
-</form>
+
+<script>
+    const has_password_checkbox = document.querySelector('#has_password');
+    const password_label = document.querySelector('label[for="id_password"]');
+    const password_field = document.querySelector('#id_password');
+
+    // Скрыть поле пароля по умолчанию
+    password_label.style.display = 'none';
+    password_field.style.display = 'none';
+
+    // Обработчик изменений состояния чекбокса
+    has_password_checkbox.addEventListener('change', function () {
+        if (has_password_checkbox.checked) {
+            // Показать поле пароля, если чекбокс выбран
+            password_label.style.display = 'block';
+            password_field.style.display = 'block';
+        } else {
+            // Скрыть поле пароля, если чекбокс не выбран
+            password_label.style.display = 'none';
+            password_field.style.display = 'none';
+        }
+    });
+</script>
+
 
 {% endblock %}

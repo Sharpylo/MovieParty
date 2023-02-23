@@ -96,7 +96,7 @@ def rooms_list(request):
             Выводит страницу списка комнат со списком всех комнат.
     """
     rooms = Room.objects.all()
-    context = {'rooms': rooms}
+    context = {'rooms': rooms, }
     return render(request, 'movieapp/rooms_list.html', context=context)
 
 

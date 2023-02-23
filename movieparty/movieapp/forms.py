@@ -12,3 +12,6 @@ class RoomForm(forms.ModelForm):
     class Meta:
         model = Room
         fields = ['name', 'has_password', 'password']
+        widgets = {
+            'has_password': forms.CheckboxInput(attrs={'id': 'has_password'}),
+        }

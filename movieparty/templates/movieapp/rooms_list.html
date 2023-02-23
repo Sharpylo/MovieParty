@@ -12,9 +12,9 @@
     {% if rooms %}
     {% for room in rooms %}
     <div class="col-md-3 col-sm-6 col-12 room-wrapper">
-        <p class="room-name">Создал - {{ room.created_by }}</p>
+        <p class="room-name">Создал - {{ room.created_by }} </p>
         {% if room.has_password %}
-        <a class="room-link" href="{% url 'check_password' room.id %}">{{ room.name }}</a>
+        <a class="room-link" href="{% url 'check_password' room.id %}">{{ room.name }} </a>
         {% else %}
         <a class="room-link" href="{% url 'chat_room_view' room.id %}">{{ room.name }}</a>
         {% endif %}

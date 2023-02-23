@@ -60,8 +60,7 @@ class Room(models.Model):
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, verbose_name='Название фильма', null=True, blank=True)
     movie_url = models.CharField(max_length=50, verbose_name='URL фильма', null=True, blank=True)
     has_password = models.BooleanField(default=False, verbose_name='Требуется пароль')
-    password = models.CharField(max_length=128, blank=True, verbose_name='Пароль для комнаты (зашифрованный)',
-                                help_text='Оставьте пустым, если пароль не требуется')
+    password = models.CharField(max_length=128, blank=True, verbose_name='Пароль для комнаты')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Время создания')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Время обновления')
     start_time = models.DateTimeField(null=True, blank=True, verbose_name='Время начала фильма')

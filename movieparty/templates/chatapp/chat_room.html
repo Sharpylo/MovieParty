@@ -17,7 +17,9 @@
         <div class="col-sm-3 chat">
             <div class="btn-group chat-b">
                 <button type="button" class="btn btn-primary chat-b" id="showMessageContainer">Чат</button>
-                <button type="button" class="btn btn-primary chat-b-" id="showUserListContainer">Онлайн</button>
+                <button type="button" class="btn btn-primary chat-b-" id="showUserListContainer">
+                    Онлайн - {{ room.get_online_count }}
+                </button>
             </div>
             <div class="flex-fill d-flex flex-column">
                 <div class="mb-2">
@@ -71,7 +73,14 @@
             </select>
             {% endif %}
         </div>
-        <div class="col-sm-3"><br><h3>Поделиться комнатой в: </h3></div>
+        <div class="col-sm-3">
+            <br>
+            <h3>Поделиться комнатой в:</h3>
+            <a href="https://telegram.me/share/url?url={{ request.build_absolute_uri|urlencode }}&text=Присоединяйтесь%20к%20комнате%20{{ room_name|urlencode }}%20на%20MovieApp!"
+               target="_blank" class="btn btn-primary mb-2">Telegram</a>
+            <a href="https://www.instagram.com/create/shortcuts/?url={{ request.build_absolute_uri|urlencode }}&title={{ room_name|urlencode }}"
+               target="_blank" class="btn btn-primary mb-2">Instagram</a>
+        </div>
     </div>
 
 </div>
