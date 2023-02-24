@@ -1,0 +1,38 @@
+{% extends "movieapp/base.html" %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<p class="no_films">Настройки учетной записи</p>
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-md-4 pics">
+            <div class="my-card">
+                <div class="card-body">
+                    <img class="rounded-circle account-img mb-3" src="{{ user.profile.image.url }}">
+                    <div class="form-group">
+                        <label for="id_image">Изменить изображение профиля</label>
+                        {{ p_form.image }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8 prof">
+            <div class="my-card">
+                <div class="card-body">
+                    {{ u_form.as_p }}
+                    {{ p_form.bio }}
+                    {{ p_form.phone_number }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group text-center mx-auto m-5">
+        <button type="submit" class="btn btn-primary btn-block">Сохранить изменения</button>
+    </div>
+</form>
+
+
+{% endblock %}

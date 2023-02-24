@@ -48,7 +48,8 @@
                     <ul class="list-group d-flex">
                         {% if user.is_authenticated %}
                         <li class="list-group-item d-flex mx-4">
-                            Пользователь: {{ user.get_username }}
+                            <a href="{% url 'profile' username=user.username %}"
+                               class="text-decoration-none text-reset">Пользователь: {{ user.get_username }}</a>
                             <span class="mx-3"></span>
                             <a href="{% url 'logout'%}?next={{request.path}}"
                                class="text-decoration-none text-reset">Выход</a>

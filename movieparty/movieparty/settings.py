@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'streamapp',
     'registration',
     'channels',
+    'account',
 ]
 
 MIDDLEWARE = [

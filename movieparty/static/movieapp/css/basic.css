@@ -326,17 +326,17 @@ select:hover, textarea:hover, input:hover {
     width: 100%;
 }
 
-input[type="text"] {
-    background-color: transparent;
-    border: 1px solid var(--color-header);
-    color: var(--color-text);
-    font-size: 16px;
-    padding: 5px;
-}
+/*input[type="text"] {*/
+/*    background-color: transparent;*/
+/*    border: 1px solid var(--color-header);*/
+/*    color: var(--color-text);*/
+/*    font-size: 16px;*/
+/*    padding: 5px;*/
+/*}*/
 
-input[type="text"]:hover {
-    background-color: var(--color-text);
-}
+/*input[type="text"]:hover {*/
+/*    background-color: var(--color-text);*/
+/*}*/
 
 /*конец чат*/
 
@@ -389,3 +389,137 @@ div.create {
 
 
 /*конец список комнат*/
+
+/*аккаунт*/
+.my-card {
+    border: 1px solid var(--color-text);
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.my-card .card-body {
+    text-align: center;
+}
+
+.my-card img.account-img {
+    width: calc(var(--index) * 60);
+    object-fit: cover;
+    margin: 0 auto;
+    display: block;
+    border-radius: 50%;
+    border: 2px solid var(--color-text);
+}
+
+.my-card .form-group label {
+    font-weight: bold;
+}
+
+.my-card button[type="submit"] {
+    margin-top: 10px;
+}
+
+.form-control-file {
+    padding: .375rem .75rem;
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    box-shadow: none;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+label {
+    display: inline-block;
+    margin-bottom: .5rem;
+}
+
+input,
+select,
+textarea {
+    display: block;
+    width: 100%;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid var(--color-text);
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: 0;
+    box-shadow: 0 0 0 .2rem rgba(0, 123, 255, .25);
+    border-color: #80bdff;
+}
+
+.account-img {
+    width: calc(var(--index) * 60);
+}
+
+.card-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 10px;
+    color: var(--color-header);
+}
+
+.card-text {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: var(--color-text);
+}
+
+.container.profile {
+    border: 1px solid var(--color-text);
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 600px;
+}
+
+.account-img {
+    max-width: 100%;
+    height: auto;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.col-sm-4 {
+    flex-basis: 30%;
+}
+
+.col-sm-8 {
+    flex-basis: 65%;
+}
+
+.card-title {
+    margin-top: 0;
+}
+
+.card-text {
+    margin-bottom: 0;
+}
+
+.icon-s {
+    font-size: 2em; /* изменяем размер иконки */
+}
+
+/*конец аккаунт*/

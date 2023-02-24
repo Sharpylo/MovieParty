@@ -25,6 +25,7 @@ urlpatterns = [
     path('', include('movieapp.urls')),
     path('chat/', include('chatapp.urls')),
     path('', include('registration.urls')),
+    path('', include('account.urls')),
     # path('', include('streamapp.urls')),
 ]
 
