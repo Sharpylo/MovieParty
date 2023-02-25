@@ -1,3 +1,4 @@
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.contrib.auth.hashers import make_password, check_password
 from django.utils.html import format_html
@@ -38,6 +39,7 @@ class Movie(models.Model):
     video = models.FileField(upload_to='videos/', verbose_name='Файл фильма', null=True, blank=True)
     trailer = models.TextField(verbose_name='Трейлер', null=True, blank=True)
     link_movie = models.TextField(verbose_name='Ссылка на фильм', null=True, blank=True)
+    ratings = models.ManyToManyField(User, through='Rating', related_name='movie_ratings')
 
     def __str__(self):
         return self.title
@@ -53,6 +55,21 @@ class Movie(models.Model):
             return "-"
 
     get_image_html.short_description = 'Изображение обложки'
+
+
+class Rating(models.Model):
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='movie_ratings')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ratings')
+    value = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)], default=0)
+
+    class Meta:
+        unique_together = ('movie', 'user')
+        verbose_name = 'Рейтинг'
+        verbose_name_plural = 'Рейтинги'
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self.movie.ratings.create(user=self.user, value=self.value)
 
 
 class Room(models.Model):

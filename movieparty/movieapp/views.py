@@ -1,10 +1,11 @@
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden
-from django.shortcuts import render, reverse, get_object_or_404
+from django.shortcuts import render, reverse, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
-from .forms import MovieForm, RoomForm
-from .models import Movie, Room, Genre, Country
+from .forms import MovieForm, RoomForm, RatingForm
+from .models import Movie, Room, Genre, Country, Rating
 from chatapp.models import ChatRoom
 
 from rest_framework import viewsets
@@ -137,6 +138,32 @@ def movies_list(request):
     return render(request, 'movieapp/movies_list.html', context=context)
 
 
+def get_rating_info(movie):
+    ratings = movie.ratings.all()
+    print(ratings)
+    count = ratings.count()
+    if count == 0:
+        return {
+            'average_rating': 0,
+            'count': 0,
+            'rating_html': 'Нет рейтинга',
+        }
+    sum_ratings = sum([rating.value for rating in ratings])
+    average_rating = sum_ratings / len(ratings) if len(ratings) > 0 else 0
+    rating_html = ''
+    for i in range(1, 6):
+        if i <= average_rating:
+            rating_html += '<i class="fas fa-star text-warning"></i>'
+        else:
+            rating_html += '<i class="far fa-star"></i>'
+    return {
+        'average_rating': average_rating,
+        'count': count,
+        'rating_html': rating_html,
+    }
+
+
+@login_required
 def movies_card(request, item_id):
     """
     Вывод страницы с подробной информацией о конкретном фильме.
@@ -150,9 +177,32 @@ def movies_card(request, item_id):
 
     link_trailer - переделывает ссылку для отображения трейлера на странице фильма
     """
-    movie = Movie.objects.get(pk=item_id)
+    movie = get_object_or_404(Movie, pk=item_id)
+    rating = request.user.ratings.filter(movie=movie).first()
+    rating_form = RatingForm(request.POST or None, instance=rating)
+
+    if request.method == 'POST':
+        if rating_form.is_valid():
+            rating = rating_form.save(commit=False)
+            rating.movie = movie
+            rating.user = request.user
+            rating_form.save()
+            messages.success(request, 'Ваш рейтинг успешно сохранен!')
+        else:
+            messages.error(request, 'Некорректное значение рейтинга')
+
     link_trailer = 'https://www.youtube.com/embed/' + movie.trailer.split('/')[-1]
-    return render(request, 'movieapp/movies_card.html', {'movie': movie, 'trailer': link_trailer})
+    rating_info = get_rating_info(movie)
+    context = {
+        'movie': movie,
+        'trailer': link_trailer,
+        'rating': rating,
+        'rating_form': rating_form,
+        'rating_html': rating_info['rating_html'],
+        'average_rating': rating_info['average_rating'],
+        'rating_count': rating_info['count'],
+    }
+    return render(request, 'movieapp/movies_card.html', context)
 
 
 def movie_search(request):

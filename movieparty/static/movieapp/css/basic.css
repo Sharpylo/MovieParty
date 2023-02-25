@@ -391,6 +391,7 @@ div.create {
 /*конец список комнат*/
 
 /*аккаунт*/
+
 .my-card {
     border: 1px solid var(--color-text);
     border-radius: 10px;
@@ -403,7 +404,7 @@ div.create {
 }
 
 .my-card img.account-img {
-    width: calc(var(--index) * 60);
+    width: calc(var(--index) * 30);
     object-fit: cover;
     margin: 0 auto;
     display: block;
@@ -467,7 +468,7 @@ textarea:focus {
 }
 
 .account-img {
-    width: calc(var(--index) * 60);
+    width: calc(var(--index) * 30);
 }
 
 .card-title {
@@ -491,7 +492,7 @@ textarea:focus {
 }
 
 .account-img {
-    max-width: 100%;
+    max-width: 80%;
     height: auto;
 }
 
@@ -523,3 +524,48 @@ textarea:focus {
 }
 
 /*конец аккаунт*/
+
+/*рейтинг*/
+
+.rating {
+    display: inline-block;
+}
+
+.rating input[type="radio"] {
+    display: none;
+}
+
+.rating label {
+    font-size: 2em;
+    color: #ffc107;
+    cursor: pointer;
+}
+
+.rating label:hover,
+.rating label:hover ~ label,
+.rating input[type="radio"]:checked ~ label {
+    color: #ccc;
+}
+
+.rating label:hover {
+    color: #ffd700;
+}
+
+.rating label.selected {
+    color: #ffc107;
+    animation: pulse 0.5s ease-out;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.5);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/*конец рейтинг*/

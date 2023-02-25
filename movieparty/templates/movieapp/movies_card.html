@@ -7,26 +7,30 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-sm-3 col-md-6 col-lg-4 bg-primary text-white">
+        <div class="col-sm-3 col-md-6 col-lg-4 text-white">
             <img src="{{ movie.cover_image.url }}" width="100%" height="auto" alt="{{ movie.title }}">
         </div>
-        <div class="col-sm-9 col-md-6 col-lg-8 bg-dark text-white">
+        <div class="col-sm-9 col-md-6 col-lg-8 text-white">
             <p class="card-movie"><h4>Название: {{ movie.title }}</h4></p>
             <p class="card-movie"><h4>Год выпуска: {{ movie.year }}</h4></p>
             <p class="card-movie">
-                <h4>Страна: </h4>
-                {% for country in movie.country.all %}
-                {{ country.name }}
-                {% if not forloop.last %}, {% endif %}
-                {% endfor %}
+            <h4>Страна: </h4>
+            {% for country in movie.country.all %}
+            {{ country.name }}
+            {% if not forloop.last %}, {% endif %}
+            {% endfor %}
             </p>
             <p class="card-movie">
-                <h4>Жанры: </h4>
-                {% for genre in movie.genre.all %}
-                {{ genre.name }}
-                {% if not forloop.last %}, {% endif %}
-                {% endfor %}
+            <h4>Жанры: </h4>
+            {% for genre in movie.genre.all %}
+            {{ genre.name }}
+            {% if not forloop.last %}, {% endif %}
+            {% endfor %}
             </p>
+            <p>
+                {% include 'movieapp/movie_rate.html' %}
+            </p>
+
         </div>
     </div>
 </div>

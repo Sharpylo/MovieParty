@@ -1,0 +1,43 @@
+<form id="rating-form" method="post" action="{% url 'movies_card' movie.id %}">
+    {% csrf_token %}
+    <div class="rating">
+        <input type="radio" id="rating1" name="value" value="1">
+        <label for="rating1" onclick="submitForm(1)">★</label>
+        <input type="radio" id="rating2" name="value" value="2">
+        <label for="rating2" onclick="submitForm(2)">★</label>
+        <input type="radio" id="rating3" name="value" value="3">
+        <label for="rating3" onclick="submitForm(3)">★</label>
+        <input type="radio" id="rating4" name="value" value="4">
+        <label for="rating4" onclick="submitForm(4)">★</label>
+        <input type="radio" id="rating5" name="value" value="5">
+        <label for="rating5" onclick="submitForm(5)">★</label>
+        {% if rating %}
+        <span>Ваша оценка: {{ rating.value }}</span>
+        {% endif %}
+    </div>
+    <br>
+    <div class="rating-info">
+        <p>Рейтинг: {{ rating_html }}</p>
+        <p>Средний рейтинг: {{ average_rating }} ({{ rating_count }} оценок)</p>
+    </div>
+    <noscript>
+        <button type="submit">{% if rating %}Сохранить изменения{% else %}Сохранить рейтинг{% endif %}</button>
+    </noscript>
+</form>
+
+<script>
+    function submitForm(value) {
+        // устанавливаем значение радио-кнопки
+        document.getElementById("rating" + value).checked = true;
+        // отправляем форму
+        document.getElementById("rating-form").submit();
+        // добавляем визуальное подтверждение выбора рейтинга (можно изменить или удалить)
+        document.querySelectorAll('.rating label').forEach((label, index) => {
+            if (index < value) {
+                label.classList.add('selected');
+            } else {
+                label.classList.remove('selected');
+            }
+        });
+    }
+</script>
