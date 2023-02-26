@@ -18,7 +18,7 @@ class RoomForm(forms.ModelForm):
 
 
 class RatingForm(forms.ModelForm):
-    value = forms.ChoiceField(choices=[(str(i), i) for i in range(1, 6)], widget=forms.RadioSelect)
+    value = forms.IntegerField(widget=forms.RadioSelect(choices=[(i, i) for i in range(1, 6)]))
 
     class Meta:
         model = Rating

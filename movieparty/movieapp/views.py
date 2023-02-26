@@ -138,71 +138,111 @@ def movies_list(request):
     return render(request, 'movieapp/movies_list.html', context=context)
 
 
-def get_rating_info(movie):
-    ratings = movie.ratings.all()
-    print(ratings)
-    count = ratings.count()
-    if count == 0:
-        return {
-            'average_rating': 0,
-            'count': 0,
-            'rating_html': 'Нет рейтинга',
-        }
-    sum_ratings = sum([rating.value for rating in ratings])
-    average_rating = sum_ratings / len(ratings) if len(ratings) > 0 else 0
-    rating_html = ''
-    for i in range(1, 6):
-        if i <= average_rating:
-            rating_html += '<i class="fas fa-star text-warning"></i>'
-        else:
-            rating_html += '<i class="far fa-star"></i>'
-    return {
-        'average_rating': average_rating,
-        'count': count,
-        'rating_html': rating_html,
-    }
+def _get_movie_ratings(movie):
+    '''
+    Функция по подсчету среднего рейтинга
+    '''
+    ratings = movie.movie_ratings.all()
+    avg_rating = 0
+    num_ratings = len(ratings)
+    if num_ratings > 0:
+        total_rating = sum([rating.value for rating in ratings])
+        avg_rating = round(total_rating / num_ratings, 1)
+    return ratings, avg_rating, num_ratings
 
 
 @login_required
 def movies_card(request, item_id):
     """
-    Вывод страницы с подробной информацией о конкретном фильме.
+        Отображает подробное представление фильма, включая информацию о фильме,
+        трейлере, среднем рейтинге и рейтинге пользователя (если он аутентифицирован).
+        Если пользователь отправляет оценку через POST-запрос, сохраняет или обновляет оценку
+        для текущего пользователя и фильма, а также выводит сообщение об успехе или ошибке
+        соответственно.
 
-    Args:
-        request: объект HttpRequest, представляющий текущий запрос.
-        item_id: ID фильма, который необходимо отобразить.
+        Аргументы:
+        - request: объект HttpRequest, представляющий текущий запрос
+        - item_id: целое число, представляющее идентификатор объекта Movie, который должен быть отображен.
 
-    Возвращает:
-        Выводит страницу с подробной информацией о выбранном фильме и его трейлере.
-
-    link_trailer - переделывает ссылку для отображения трейлера на странице фильма
+        Возвращает:
+        - HttpResponse объект, отображающий шаблон 'movieapp/movies_card.html'
+          со следующими контекстными переменными:
+            - 'movie': объект Movie с указанным ID
+            - 'trailer': строка, представляющая URL-адрес трейлера фильма на YouTube
+            - 'rating': объект Rating, соответствующий текущему пользователю и фильму,
+              или None, если пользователь не аутентифицирован или еще не оценил фильм.
+            - 'rating_form': Объект RatingForm для отображения и проверки пользовательского
+              рейтинга через POST-запрос
+            - 'avg_rating': плавающая величина, представляющая средний рейтинг для фильма
+            - 'num_ratings': целое число, представляющее общее количество оценок для фильма
     """
     movie = get_object_or_404(Movie, pk=item_id)
-    rating = request.user.ratings.filter(movie=movie).first()
-    rating_form = RatingForm(request.POST or None, instance=rating)
+    rating_form = RatingForm(request.POST or None)
+    ratings, avg_rating, num_ratings = _get_movie_ratings(movie)
 
-    if request.method == 'POST':
+    if request.method == 'POST' and request.user.is_authenticated:
+        rating = request.user.ratings.filter(movie=movie).first()
+        rating_form = RatingForm(request.POST, instance=rating)
         if rating_form.is_valid():
-            rating = rating_form.save(commit=False)
-            rating.movie = movie
-            rating.user = request.user
-            rating_form.save()
-            messages.success(request, 'Ваш рейтинг успешно сохранен!')
+            rating_obj = rating_form.save(commit=False)
+            rating_obj.user = request.user
+            rating_obj.movie = movie
+            rating_obj.save()
+            if rating:
+                messages.success(request, 'Ваш рейтинг успешно обновлен!')
+            else:
+                messages.success(request, 'Ваш рейтинг успешно сохранен!')
         else:
             messages.error(request, 'Некорректное значение рейтинга')
+    else:
+        rating = request.user.ratings.filter(movie=movie).first() if request.user.is_authenticated else None
+        rating_form = RatingForm(instance=rating)
 
     link_trailer = 'https://www.youtube.com/embed/' + movie.trailer.split('/')[-1]
-    rating_info = get_rating_info(movie)
     context = {
         'movie': movie,
         'trailer': link_trailer,
         'rating': rating,
         'rating_form': rating_form,
-        'rating_html': rating_info['rating_html'],
-        'average_rating': rating_info['average_rating'],
-        'rating_count': rating_info['count'],
+        'avg_rating': avg_rating,
+        'num_ratings': num_ratings
     }
     return render(request, 'movieapp/movies_card.html', context)
+
+
+def movies_rating_list(request):
+    """
+        Функция просмотра для отображения списка фильмов, отсортированных по среднему рейтингу или количеству оценок.
+
+        Аргументы:
+        - request: объект HttpRequest
+
+        Возвращает:
+        - HttpResponse объект, содержащий отрисованный шаблон movieapp/movies_rating_list.html
+
+        Функция извлекает список всех фильмов из модели Movie, а затем вычисляет средний рейтинг и количество
+        оценок для каждого фильма с помощью вспомогательной функции _get_movie_ratings. Затем данные о фильмах сортируются в зависимости от
+        значения параметра запроса sort_by, который по умолчанию имеет значение 'avg_rating'. Параметр запроса sort_order используется для того, чтобы
+        определяет, в каком порядке сортировать - по возрастанию или по убыванию, и по умолчанию имеет значение 'desc'.
+
+        Функция рендерит шаблон movieapp/movies_rating_list.html, передавая отсортированные данные фильмов, текущее значение sort_order и текущее значение sort_by.
+        sort_by и текущее значение sort_order в контекстном словаре. Шаблон отображает данные о фильмах в
+        в виде таблицы, каждая строка которой представляет фильм, его название, средний рейтинг и количество оценок.
+     """
+    sort_by = request.GET.get('sort_by', 'avg_rating')
+    sort_order = request.GET.get('sort_order', 'desc')
+    movies = Movie.objects.all()
+    movie_data = []
+    for movie in movies:
+        ratings, avg_rating, num_ratings = _get_movie_ratings(movie)
+        movie_data.append({'title': movie.title, 'avg_rating': avg_rating, 'num_ratings': num_ratings})
+    if sort_by == 'num_ratings':
+        movie_data.sort(key=lambda x: x['num_ratings'], reverse=sort_order == 'desc')
+    else:
+        movie_data.sort(key=lambda x: x['avg_rating'], reverse=sort_order == 'desc')
+    context = {'movie_data': movie_data, 'sort_by': sort_by,
+               'sort_order': sort_order}
+    return render(request, 'movieapp/movies_rating_list.html', context)
 
 
 def movie_search(request):

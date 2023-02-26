@@ -5,6 +5,7 @@ from .models import Movie, Room, Genre, Country, Rating
 class RatingInline(admin.TabularInline):
     model = Rating
     extra = 0
+    collapse = True
 
 
 class MovieAdmin(admin.ModelAdmin):
@@ -19,4 +20,3 @@ admin.site.register(Movie, MovieAdmin)
 admin.site.register(Room)
 admin.site.register(Genre)
 admin.site.register(Country)
-admin.site.register(Rating)

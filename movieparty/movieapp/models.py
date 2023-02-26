@@ -67,9 +67,11 @@ class Rating(models.Model):
         verbose_name = 'Рейтинг'
         verbose_name_plural = 'Рейтинги'
 
+    def __str__(self):
+        return f'{self.movie.title} - {self.user.username} - {self.value}'
+
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        self.movie.ratings.create(user=self.user, value=self.value)
 
 
 class Room(models.Model):

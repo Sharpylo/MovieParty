@@ -16,11 +16,12 @@ urlpatterns = [
     path('movies-search/', views.movie_search, name='movie_search'),
     path('movies-filter/', views.movie_filter, name='movie_filter'),
     path('movies-card/<int:item_id>/', views.movies_card, name='movies_card'),
+    path('movies-card/<int:item_id>/', views.movies_card, name='movies_card'),
 
     path('room-create/', views.room_create, name='room_create'),
     path('rooms-list/', views.rooms_list, name='rooms_list'),
     path('room-delete/<int:item_id>/', views.room_delete, name='room_delete'),
-    path('room-update/<int:item_id>/', views.room_update, name='room_update'),
+    path('movies-rating-list/', views.movies_rating_list, name='movies_rating_list'),
 
     path('api/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
