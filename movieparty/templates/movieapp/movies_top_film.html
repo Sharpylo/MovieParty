@@ -1,0 +1,25 @@
+{% for movie in movies_top %}
+<div class="my-row top-films">
+    {% if forloop.counter0|divisibleby:2 %}
+    <div class="col-sm-8 description order-1 order-sm-2">
+        <a href="{% url 'movies_card' movie.id %}"><p class="top-films-title">{{ movie.title }}</p></a>
+        <p class="top-films-rait">Рейтинг: {{ movie.avg_rating }}</p>
+        <p class="top-films-description d-none d-md-block">Описание фильма: </p>
+        <p class="top-films-description d-none d-md-block">{{ movie.description }}</p>
+    </div>
+    <div class="col-sm-4 img order-2 order-sm-1">
+        <img src="{{ movie.cover_image.url }}" width="100%" height="auto" alt="{{ movie.title }}">
+    </div>
+    {% else %}
+    <div class="col-sm-4 img order-1 order-sm-2">
+        <img src="{{ movie.cover_image.url }}" width="100%" height="auto" alt="{{ movie.title }}">
+    </div>
+    <div class="col-sm-8 description order-2 order-sm-1">
+        <a href="{% url 'movies_card' movie.id %}"><p class="top-films-title">{{ movie.title }}</p></a>
+        <p class="top-films-rait">Рейтинг: {{ movie.avg_rating }}</p>
+        <p class="top-films-description d-none d-md-block">Описание фильма: </p>
+        <p class="top-films-description d-none d-md-block">{{ movie.description }}</p>
+    </div>
+    {% endif %}
+</div>
+{% endfor %}

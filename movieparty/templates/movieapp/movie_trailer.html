@@ -1,0 +1,43 @@
+<!-- The Modal -->
+<div class="modal" id="myModal">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Трейлер фильма: {{ movie.title }}</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" onclick="stopVideo()"></button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <iframe
+                        id="video-player"
+                        src="{{ trailer }}"
+                        title="YouTube video player"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen
+                        style="height: 1000px; width: 1000px"
+                ></iframe>
+                <script>
+                    // Получаем модальное окно
+                    var modal = document.getElementById("myModal");
+
+                    // Получаем видео-плеер
+                    var player = document.getElementById("video-player");
+
+                    function stopVideo() {
+                        // Останавливаем видео
+                        player.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+                    }
+
+                    // Добавляем обработчик события закрытия модального окна
+                    modal.addEventListener("hide.bs.modal", function () {
+                        // Добавляем задержку в 500 мс
+                        setTimeout(stopVideo, 500);
+                    });
+                </script>
+            </div>
+        </div>
+    </div>
+</div>

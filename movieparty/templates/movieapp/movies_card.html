@@ -6,31 +6,39 @@
 {% block content %}
 
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-sm-3 col-md-6 col-lg-4 text-white">
+    <div class="my-row">
+        <div class="media-card col-sm-3 col-md-6 col-lg-4">
             <img src="{{ movie.cover_image.url }}" width="100%" height="auto" alt="{{ movie.title }}">
         </div>
-        <div class="col-sm-9 col-md-6 col-lg-8 text-white">
-            <p class="card-movie"><h4>Название: {{ movie.title }}</h4></p>
-            <p class="card-movie"><h4>Год выпуска: {{ movie.year }}</h4></p>
-            <p class="card-movie">
-            <h4>Страна: </h4>
-            {% for country in movie.country.all %}
-            {{ country.name }}
-            {% if not forloop.last %}, {% endif %}
-            {% endfor %}
-            </p>
-            <p class="card-movie">
-            <h4>Жанры: </h4>
-            {% for genre in movie.genre.all %}
-            {{ genre.name }}
-            {% if not forloop.last %}, {% endif %}
-            {% endfor %}
-            </p>
-            <p>
+        <div class="description col-sm-9 col-md-6 col-lg-8">
+            <div class="card-title-1">{{ movie.title }}</div>
+            <p class="card-movie">Год выпуска:</p><h4> {{ movie.year }}</h4>
+            <p class="card-movie">Страна:</p>
+            <h4>
+                {% for country in movie.country.all %}
+                {{ country.name }}
+                {% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </h4>
+            <p class="card-movie">Жанры:</p>
+            <h4>
+                {% for genre in movie.genre.all %}
+                {{ genre.name }}
+                {% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </h4>
+            <br>
+            <br>
+            <div class="raiting">
                 {% include 'movieapp/movie_rate.html' %}
-            </p>
-
+            </div>
+            <br>
+            <div class="trailer">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
+                    Смотреть трейлер
+                </button>
+                {% include 'movieapp/movie_trailer.html' %}
+            </div>
         </div>
     </div>
 </div>
@@ -42,27 +50,5 @@
 
     </div>
 </div>
-<br>
-<div class="container-fluid">
-    <div class="row">
-        <iframe
-                id="video-player"
-                src="{{ trailer }}"
-                title="YouTube video player"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowfullscreen
-                style="width: 100%; height: 100%;"
-        ></iframe>
-
-        <script>
-            window.addEventListener('resize', function () {
-                var player = document.getElementById('video-player');
-                player.style.width = '100%';
-                player.style.height = player.offsetWidth * 0.5625 + 'px'; // соотношение сторон 16:9
-            });
-        </script>
-    </div>
-</div>
-
 
 {% endblock %}

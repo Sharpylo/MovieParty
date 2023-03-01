@@ -33,7 +33,7 @@
             <tbody>
             {% for movie in movie_data %}
             <tr>
-                <td>{{ movie.title }}</td>
+                <td><a href="{% url 'movies_card' movie.id %}">{{ movie.title }}</a></td>
                 <td>{{ movie.avg_rating|floatformat:"1" }}</td>
                 <td>{{ movie.num_ratings }}</td>
             </tr>

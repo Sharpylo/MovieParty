@@ -1,3 +1,11 @@
-<div class="container-fluid p-2 bg-primary text-white">
-    FOOTER
+{% load static %}
+<div class="row">
+    <div class="col-sm-4 foot1">Movie Party</div>
+    <div class="col-sm-4 foot2">
+        <p>Мы в соцсетях: </p>
+        <a href="#"><img src="{% static 'movieapp/img/icons8-телеграмма-app.svg' %}" alt="Telegram" class="social-icon"></a>
+        <a href="#"><img src="{% static 'movieapp/img/icons8-instagram.svg' %}" alt="Instagram" class="social-icon"></a>
+    </div>
+    <div class="col-sm-4 foot3">© 2023 Movie Party. <br> Все права защищены.</div>
 </div>
+

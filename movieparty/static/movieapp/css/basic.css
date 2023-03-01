@@ -10,15 +10,23 @@ html, body {
 }
 
 body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
     background-image: url(../img/bg.jpg);
     background-size: 50px;
     color: #fafafa;
     font-family: raleway-c;
 }
 
-.theme-dark {
-
+main {
+    flex: 1 0 auto;
 }
+
+footer {
+    flex: 0 0 auto;
+}
+
 
 :root {
     --index: calc(1vw + 1vh);
@@ -41,12 +49,13 @@ body {
 
 .navbar-brand {
     padding-left: 10vw; /* Измените значение, чтобы настроить отступ */
-    font-size: 24px;
+    font-size: 30px;
     color: #edb989;
 }
 
 .nav-link {
     color: var(--color-text);
+    font-size: 20px;
 }
 
 .d-flex .list-group-item span {
@@ -56,7 +65,7 @@ body {
 
 /*карусель*/
 
-/* Use the roundabout image by default */
+/* По умолчанию используйте изображение кругового движения */
 .my-carousel .carousel-item img {
     object-fit: cover;
     width: calc(var(--index) * 45);
@@ -79,8 +88,89 @@ body {
 
 /* конец карусель*/
 
+/*top-film основная страница*/
+
+.top-films-list {
+    align-items: center;
+}
+
+.top-films-list {
+    margin: 0 auto;
+    text-align: center;
+}
+
+.my-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.top-films-list {
+    text-align: center;
+}
+
+.top-films {
+    margin-bottom: 20px;
+    border: 1px solid var(--color-header);
+    border-radius: 15px;
+    padding: 30px;
+}
+
+.top-films .img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.top-films img {
+    max-width: 400px;
+}
+
+.top-films .description {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%; /* добавляем высоту 100% для родительского блока */
+}
+
+.top-films-title {
+    color: var(--color-header);
+    font-size: 30px;
+}
+
+.top-films-rait,
+.top-films-description {
+    color: var(--color-text);
+    font-size: 20px;
+}
+
+@media (max-width: 767px) {
+    .top-films-description {
+        display: none;
+    }
+
+    .top-films-title {
+        color: var(--color-header);
+        font-size: 22px;
+    }
+}
+
+
+/* конец top-film основная страница*/
 
 /*карточка фильма*/
+
+.media-card img {
+    max-width: 500px;
+
+}
+
+.my-row .media-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 .card {
     position: relative;
@@ -140,8 +230,8 @@ body {
 /* Style the "Фильмов нет." heading */
 .no_films {
     text-align: center;
-    font-size: 24px;
-    color: var(--color-text);
+    font-size: 30px;
+    color: var(--color-header);
 }
 
 /*end карточка фильма*/
@@ -154,7 +244,6 @@ body {
     align-items: center;
     margin-bottom: 20px;
     flex-wrap: wrap;
-
 }
 
 @media screen and (max-width: 600px) {
@@ -281,7 +370,63 @@ body {
     font-size: 20px;
     font-weight: bold;
     margin-bottom: 10px;
+    color: var(--color-text)
 
+}
+
+.modal-title {
+    color: var(--color-header);
+}
+
+.modal-body {
+    align-content: center;
+}
+
+.card-title-1 {
+    color: var(--color-header);
+    font-size: 60px;
+    margin-bottom: 10px;
+
+}
+
+.description {
+    padding-left: 30px;
+}
+
+
+.modal-content {
+    background-color: #23252a;
+}
+
+.modal-xl .modal-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+#video-player {
+    max-width: 100%;
+    max-height: 56.25vw; /* 9/16 = 0.5625 */
+}
+
+.trailer button {
+    display: inline-block;
+    padding: 5px 10px;
+    background: transparent;
+    margin: 5px 10px;
+    border: 1px solid var(--color-header);
+    border-radius: 5px;
+    text-decoration: none;
+    color: var(--color-text);
+    font-size: 20px;
+    transition: all 0.3s ease;
+}
+
+.trailer button:hover {
+    background-color: #333;
+    color: #fff;
+    transform: scale(1.1);
 }
 
 /*конец карточки фильма*/
@@ -356,37 +501,116 @@ select:hover, textarea:hover, input:hover {
 /* конец логин, регистрация*/
 
 /*список комнат*/
-.room-wrapper {
-    border: 2px solid var(--color-header);
-    padding: 10px;
+
+div.create-room {
     text-align: center;
 }
 
-.room-link {
+.room-filter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    color: var(--color-text)
+}
+
+.room-filter button {
     display: inline-block;
-    padding: 5px;
-    border: 1px solid var(--color-text);
-    background-color: transparent;
-    text-decoration: none;
-    color: var(--color-text);
-}
-
-.room-link:hover {
-    background-color: var(--color-header);
-}
-
-div.create {
-    text-align: center;
-}
-
-.create a {
-    display: inline-block;
-    padding: 10px 20px;
+    padding: 5px 10px;
+    margin: 5px 10px;
     border: 1px solid var(--color-header);
+    border-radius: 5px;
     text-decoration: none;
     color: var(--color-text);
+    font-size: 16px;
+    transition: all 0.3s ease;
 }
 
+.room-filter button:hover {
+    background-color: #333;
+    color: #fff;
+    transform: scale(1.1);
+}
+
+.create-room a {
+    display: inline-block;
+    padding: 5px 10px;
+    margin: 5px 10px;
+    border: 1px solid var(--color-header);
+    border-radius: 5px;
+    text-decoration: none;
+    color: var(--color-text);
+    font-size: 20px;
+    transition: all 0.3s ease;
+}
+
+.create-room a:hover {
+    background-color: #333;
+    color: #fff;
+    transform: scale(1.1);
+}
+
+.table th {
+    color: var(--color-header);
+    font-size: 20px;
+    text-align: center;
+}
+
+.table td {
+    color: var(--color-text);
+    font-size: 18px;
+    text-align: center;
+
+}
+
+.table a {
+    text-decoration: none;
+    color: var(--color-text);
+    border-color: var(--color-header);
+}
+
+.table a:hover {
+    background-color: #333;
+    color: #fff;
+    transform: scale(1.1);
+}
+
+.btn-outline-primary {
+    color: var(--color-text);
+    border-color: var(--color-header);
+}
+
+.btn-outline-primary:hover {
+    background-color: #333;
+    color: #fff;
+    transform: scale(1.1);
+    border-color: var(--color-header);
+}
+
+.dropdown-menu a {
+    color: black;
+}
+
+@media (max-width: 767px) {
+    .table a {
+        display: inline-block;
+        padding: 5px 10px;
+        margin: 5px 10px;
+        border: 1px solid var(--color-header);
+        border-radius: 5px;
+        text-decoration: none;
+        color: var(--color-text);
+
+        transition: all 0.3s ease;
+    }
+
+    .table a:hover {
+        background-color: #333;
+        color: #fff;
+        transform: scale(1.1);
+    }
+}
 
 /*конец список комнат*/
 
@@ -397,6 +621,10 @@ div.create {
     border-radius: 10px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Добавляем это свойство, чтобы центрировать по горизонтали */
+    height: 100%; /* Необходимо задать высоту для блока "my-card" */
 }
 
 .my-card .card-body {
@@ -496,11 +724,12 @@ textarea:focus {
     height: auto;
 }
 
-.row {
+.my-row {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
+
 }
 
 .col-sm-4 {
@@ -569,3 +798,37 @@ textarea:focus {
 }
 
 /*конец рейтинг*/
+
+/*футер*/
+
+.footer {
+    background-color: #23252a;
+    padding: 20px;
+}
+
+
+.foot1 {
+    font-size: 30px;
+    text-align: center;
+    color: var(--color-header);
+}
+
+.foot2 {
+    font-size: 16px;
+    text-align: center;
+    color: var(--color-header);
+}
+
+.social-icon {
+    width: 50px;
+    padding: 0;
+}
+
+.foot3 {
+    font-size: 20px;
+    text-align: right;
+    color: var(--color-text);
+}
+
+
+/*конец футер*/

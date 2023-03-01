@@ -17,7 +17,7 @@
 
 </head>
 
-<body onload="document.body.classList.add('theme-dark')">
+<body>
 
 <header>
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
@@ -34,14 +34,8 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'movies_list' %}">Фильмы</a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button"
-                           data-bs-toggle="dropdown">Dropdown</a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{% url 'movies_rating_list' %}">Рейтинг фильмов</a></li>
-                            <li><a class="dropdown-item" href="#">Another link</a></li>
-                            <li><a class="dropdown-item" href="#">A third link</a></li>
-                        </ul>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'movies_rating_list' %}">Рейтинг фильмов</a>
                     </li>
                 </ul>
                 <div class="d-flex flex-row-reverse">
@@ -71,15 +65,18 @@
         <div class="my-carousel mt-2">
             {% include 'movieapp/movies_carusel.html' %}
         </div>
-        <div class="recomandations">
-
+        <div class="top-films-list">
+            <br>
+            <p class="no_films">Топ 5 фильмов на сайте Movie Party: </p>
+            <br>
+            {% include 'movieapp/movies_top_film.html' %}
         </div>
         {% endblock %}
     </div>
 </main>
 
 
-<footer class="footer fixed-bottom">
+<footer class="footer">
     {% include 'movieapp/movies_footer.html' %}
 </footer>
 

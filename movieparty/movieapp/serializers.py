@@ -18,6 +18,7 @@ class CountrySerializer(serializers.ModelSerializer):
 class MovieSerializer(serializers.HyperlinkedModelSerializer):
     country = serializers.SlugRelatedField(slug_field='name', queryset=Country.objects.all(), many=True)
     genre = serializers.SlugRelatedField(slug_field='name', queryset=Genre.objects.all(), many=True)
+    ratings = serializers.StringRelatedField(many=True)
 
     class Meta:
         model = Movie
@@ -29,6 +30,7 @@ class MovieSerializer(serializers.HyperlinkedModelSerializer):
         genre_names = validated_data.pop('genre')
         countries = Country.objects.filter(name__in=country_names)
         genres = Genre.objects.filter(name__in=genre_names)
+        rating_ids = validated_data.pop('ratings', [])
 
         # Создаем фильм
         movie = Movie.objects.create(**validated_data)
@@ -36,6 +38,7 @@ class MovieSerializer(serializers.HyperlinkedModelSerializer):
         # Связываем фильм с выбранными странами и жанрами
         movie.country.set(countries)
         movie.genre.set(genres)
+        movie.ratings.set(rating_ids)
         return movie
 
 

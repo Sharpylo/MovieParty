@@ -8,9 +8,10 @@ from .forms import MovieForm, RoomForm, RatingForm
 from .models import Movie, Room, Genre, Country, Rating
 from chatapp.models import ChatRoom
 
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from .serializers import MovieSerializer, CountrySerializer, GenreSerializer, RoomSerializer
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.response import Response
 
 
 @login_required(login_url='/accounts/login')
@@ -83,6 +84,43 @@ def room_update(request, item_id):
         form.save()
         return HttpResponseRedirect(reverse('rooms_list'))
     return render(request, 'movieapp/room_update.html', {'form': form})
+
+
+def room_search(request):
+    """
+        Поиск комнат по названию.
+
+        Аргументы:
+            request: объект HttpRequest, представляющий текущий запрос.
+
+        Возвращает:
+            Выводит страницу списка комнат со списком всех комнат, в названии которых содержится поисковый запрос.
+    """
+    query = request.GET.get('q')
+    rooms = Room.objects.filter(name__icontains=query)
+    return render(request, 'movieapp/rooms_list.html', {'rooms': rooms})
+
+
+def room_filter(request):
+    """
+            Фильтр комнат по наличию пароля.
+
+            Аргументы:
+                request: объект HttpRequest, представляющий текущий запрос.
+
+            Возвращает:
+                Выводит страницу списка комнат со списком всех комнат с паролем или без
+
+    """
+    if request.method == "GET":
+        has_password = request.GET.get("has_password")
+        if has_password == 'yes':
+            rooms = Room.objects.filter(has_password=True)
+        elif has_password == 'no':
+            rooms = Room.objects.filter(has_password=False)
+        else:
+            rooms = Room.objects.all()
+        return render(request, "movieapp/rooms_list.html", {"rooms": rooms})
 
 
 @login_required(login_url='/accounts/login')
@@ -235,7 +273,7 @@ def movies_rating_list(request):
     movie_data = []
     for movie in movies:
         ratings, avg_rating, num_ratings = _get_movie_ratings(movie)
-        movie_data.append({'title': movie.title, 'avg_rating': avg_rating, 'num_ratings': num_ratings})
+        movie_data.append({'title': movie.title, 'avg_rating': avg_rating, 'num_ratings': num_ratings, 'id': movie.id})
     if sort_by == 'num_ratings':
         movie_data.sort(key=lambda x: x['num_ratings'], reverse=sort_order == 'desc')
     else:
@@ -295,7 +333,14 @@ def base_views(request):
         Отрисованный объект HttpResponse, содержащий шаблон 'base.html' и словарь всех фильмов.
     '''
     movies = Movie.objects.all()
-    context = {'movies': movies}
+    movies_top = []
+    for movie in movies:
+        ratings, avg_rating, num_ratings = _get_movie_ratings(movie)
+        movies_top.append({'title': movie.title, 'avg_rating': avg_rating, 'num_ratings': num_ratings,
+                           'cover_image': movie.cover_image, 'description': movie.description, 'id': movie.id})
+    movies_top = sorted(movies_top, key=lambda x: x['avg_rating'], reverse=True)
+
+    context = {'movies': movies, 'movies_top': movies_top[:5]}
     return render(request, 'movieapp/base.html', context=context)
 
 
@@ -320,12 +365,25 @@ class GenreViewSet(viewsets.ModelViewSet):
 
 
 class MovieViewSet(viewsets.ModelViewSet):
-    """
-        Набор представлений для просмотра и редактирования экземпляров Movie.
-    """
-    queryset = Movie.objects.all().order_by('title')
+    queryset = Movie.objects.all()
     serializer_class = MovieSerializer
-    permission_classes = (IsAuthenticatedOrReadOnly,)
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        # Retrieve the list of rating IDs from the request data
+        ratings = request.data.get('ratings', [])
+
+        # Create a new movie instance
+        self.perform_create(serializer)
+
+        # Set the ratings for the movie using the set() method
+        movie = serializer.instance
+        movie.ratings.set(ratings)
+
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
 class RoomViewSet(viewsets.ModelViewSet):

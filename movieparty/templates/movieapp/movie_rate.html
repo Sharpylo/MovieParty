@@ -1,6 +1,6 @@
 <form id="rating-form" method="post" action="{% url 'movies_card' movie.id %}">
     {% csrf_token %}
-    <p>Оставить рейтинг: </p>
+    <p class="card-movie">Оставить рейтинг: </p>
     <div class="rating">
         <input type="radio" id="rating1" name="value" value="1">
         <label for="rating1" onclick="submitForm(1)">★</label>
@@ -18,7 +18,7 @@
     </div>
     <br>
     <div class="rating-info">
-        <p>Средний рейтинг: {{ avg_rating }} ({{ num_ratings }} оценок)</p>
+        <p class="card-movie">Средний рейтинг: {{ avg_rating }} ({{ num_ratings }} оценок)</p>
     </div>
     <noscript>
         <button type="submit">{% if rating %}Сохранить изменения{% else %}Сохранить рейтинг{% endif %}</button>

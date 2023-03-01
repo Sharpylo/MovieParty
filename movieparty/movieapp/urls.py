@@ -4,9 +4,9 @@ from rest_framework import routers
 from . import views
 
 router = routers.DefaultRouter()
-router.register(r'countries', views.CountryViewSet)
-router.register(r'genres', views.GenreViewSet)
-router.register(r'movies', views.MovieViewSet)
+router.register(r'countries', views.CountryViewSet, basename='countries')
+router.register(r'genres', views.GenreViewSet, basename='genres')
+router.register(r'movies', views.MovieViewSet, basename='movie')
 router.register(r'rooms-api', views.RoomViewSet, basename='room')
 
 urlpatterns = [
@@ -20,7 +20,11 @@ urlpatterns = [
 
     path('room-create/', views.room_create, name='room_create'),
     path('rooms-list/', views.rooms_list, name='rooms_list'),
+    path('room-update/<int:item_id>/', views.room_update, name='room_update'),
     path('room-delete/<int:item_id>/', views.room_delete, name='room_delete'),
+    path('rooms-search/', views.room_search, name='room_search'),
+    path('rooms-filter/', views.room_filter, name='room_filter'),
+
     path('movies-rating-list/', views.movies_rating_list, name='movies_rating_list'),
 
     path('api/', include(router.urls)),
