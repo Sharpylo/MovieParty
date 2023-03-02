@@ -23,6 +23,10 @@ class ChatRoom(models.Model):
     def __str__(self):
         return f'{self.name} ({self.get_online_count()})'
 
+    class Meta:
+        verbose_name = 'Чат комната'
+        verbose_name_plural = 'Чат комнаты'
+
 
 class Message(models.Model):
     user = models.ForeignKey(to=User, on_delete=models.CASCADE)

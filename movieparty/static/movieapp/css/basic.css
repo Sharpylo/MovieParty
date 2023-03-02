@@ -433,6 +433,10 @@ footer {
 
 /*чат*/
 
+.container-chat {
+    width: 100%;
+}
+
 #chatLog, #onlineUsersSelector, select, textarea, input {
     background-color: transparent;
     border: 1px solid var(--color-header);
@@ -549,6 +553,10 @@ div.create-room {
     background-color: #333;
     color: #fff;
     transform: scale(1.1);
+}
+
+.table-responsive {
+    width: 85%;
 }
 
 .table th {
