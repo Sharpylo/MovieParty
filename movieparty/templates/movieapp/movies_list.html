@@ -32,6 +32,9 @@
         </div>
     </div>
     {% endfor %}
+    <div class="pagination-container">
+        {% include 'pagination/movies_pagination.html' %}
+    </div>
     {% else %}
     <br>
     <div class="container">
@@ -39,6 +42,9 @@
     </div>
     {% endif %}
 </div>
+
+
+
 
 <script>
     const showGenresBtn = document.getElementById('show-genres-btn');

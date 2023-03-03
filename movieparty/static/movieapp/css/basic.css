@@ -555,7 +555,7 @@ div.create-room {
     transform: scale(1.1);
 }
 
-.table-responsive {
+.my-table-responsive {
     width: 85%;
 }
 
@@ -840,3 +840,26 @@ textarea:focus {
 
 
 /*конец футер*/
+
+/*pagination*/
+
+.page-item .page-link {
+    color: var(--color-text);
+    background-color: transparent;
+    border: 1px solid var(--color-header);
+}
+
+.page-item.active .page-link {
+    color: var(--color-text);
+}
+
+.form-control {
+    border: 1px solid var(--color-header);
+    border-radius: 1px;
+    background-color: transparent;
+    color: var(--color-text);
+}
+
+
+
+/* конец pagination*/

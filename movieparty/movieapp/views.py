@@ -3,10 +3,10 @@ from django.shortcuts import render, reverse, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from .forms import MovieForm, RoomForm, RatingForm
 from .models import Movie, Room, Genre, Country, Rating
-from chatapp.models import ChatRoom
 
 from rest_framework import viewsets, status
 from .serializers import MovieSerializer, CountrySerializer, GenreSerializer, RoomSerializer
@@ -134,8 +134,19 @@ def rooms_list(request):
         Возвращает:
             Выводит страницу списка комнат со списком всех комнат.
     """
-    rooms = Room.objects.all()
-    context = {'rooms': rooms, }
+    rooms_list = Room.objects.all()
+
+    # Обработка выбора количества элементов на странице
+    items_per_page_r = request.GET.get('items_per_page_r')
+    if items_per_page_r is None:
+        items_per_page_r = 10
+    else:
+        items_per_page_r = int(items_per_page_r)
+    paginator = Paginator(rooms_list, items_per_page_r)
+
+    page = request.GET.get('page')
+    rooms = paginator.get_page(page)
+    context = {'rooms': rooms, 'items_per_page_r': items_per_page_r}
     return render(request, 'movieapp/rooms_list.html', context=context)
 
 
@@ -170,9 +181,20 @@ def movies_list(request):
         Возвращает:
             Выводит страницу списка фильмов со списком всех фильмов и жанров.
     """
-    movies = Movie.objects.all()
+    all_movies = Movie.objects.all()
     genre = Genre.objects.all()
-    context = {'movies': movies, 'genres': genre}
+
+    # Обработка выбора количества элементов на странице
+    items_per_page = request.GET.get('items_per_page')
+    if items_per_page is None:
+        items_per_page = 12
+    else:
+        items_per_page = int(items_per_page)
+    paginator = Paginator(all_movies, items_per_page)
+
+    page = request.GET.get('page')
+    movies = paginator.get_page(page)
+    context = {'movies': movies, 'genres': genre, 'items_per_page': items_per_page}
     return render(request, 'movieapp/movies_list.html', context=context)
 
 

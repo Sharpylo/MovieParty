@@ -1,0 +1,35 @@
+<div class="container mt-3">
+    <ul class="pagination justify-content-center">
+        {% if movies.has_previous %}
+        <li class="page-item">
+            <a href="?page={{ movies.previous_page_number }}&items_per_page={{ items_per_page }}" class="page-link">&#11160;</a>
+        </li>
+        {% endif %}
+
+        <li class="page-item active">
+            <a class="page-link" href="#">
+                страница {{ movies.number }} из {{ movies.paginator.num_pages }}
+            </a>
+        </li>
+
+        {% if movies.has_next %}
+        <li class="page-item">
+            <a href="?page={{ movies.next_page_number }}&items_per_page={{ items_per_page }}" class="page-link">&#11162;</a>
+        </li>
+        {% endif %}
+        <li class="page-item">
+            <span class="page-link">Показывать по:</span>
+        </li>
+        <li class="page-item">
+            <form action="{% url 'movies_list' %}" method="get">
+                <select name="items_per_page" id="items_per_page" class="form-control" onchange="this.form.submit()">
+                    <option value="4" {% if items_per_page == 4 %}selected{% endif %}>4</option>
+                    <option value="8" {% if items_per_page == 8  %}selected{% endif %}>8</option>
+                    <option value="12" {% if items_per_page == 12 or not items_per_page %}selected{% endif %}>12</option>
+                    <option value="16" {% if items_per_page == 16 %}selected{% endif %}>16</option>
+                    <option value="20" {% if items_per_page == 20 %}selected{% endif %}>20</option>
+                </select>
+            </form>
+        </li>
+    </ul>
+</div>

@@ -29,7 +29,7 @@
     </div>
 </div>
 
-<div class="table-responsive">
+<div class="my-table-responsive">
     <table class="table table-dark table-hover">
         <thead>
         <tr>
@@ -86,8 +86,13 @@
         </tr>
         {% endif %}
         </tbody>
-
     </table>
+    {% if rooms.has_other_pages %}
+    <div class="pagination-container">
+        {% include 'pagination/rooms_pagination.html' %}
+    </div>
+    {% endif %}
 </div>
+
 
 {% endblock %}

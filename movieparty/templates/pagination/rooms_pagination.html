@@ -1,0 +1,36 @@
+<div class="container mt-3">
+    <ul class="pagination justify-content-center">
+        {% if rooms.has_previous %}
+        <li class="page-item">
+            <a href="?page={{ rooms.previous_page_number }}&items_per_page_r={{ items_per_page_r }}" class="page-link">&#11160;</a>
+        </li>
+        {% endif %}
+
+        <li class="page-item active">
+            <a class="page-link" href="#">
+                Страница {{ rooms.number }} из {{ rooms.paginator.num_pages }}
+            </a>
+        </li>
+
+        {% if rooms.has_next %}
+        <li class="page-item">
+            <a href="?page={{ rooms.next_page_number }}&items_per_page_r={{ items_per_page_r }}" class="page-link">&#11162;</a>
+        </li>
+        {% endif %}
+
+        <li class="page-item">
+            <span class="page-link">Показывать по:</span>
+        </li>
+        <li class="page-item">
+            <form action="{% url 'rooms_list' %}" method="get">
+                <select name="items_per_page_r" id="items_per_page_r" class="form-control"
+                        onchange="this.form.submit()">
+                    <option value="5" {% if items_per_page_r == 5 %}selected{% endif %}>5</option>
+                    <option value="10" {% if items_per_page_r == 10 or not items_per_page_r %}selected{% endif %}>10
+                    </option>
+                    <option value="20" {% if items_per_page_r == 20 %}selected{% endif %}>20</option>
+                </select>
+            </form>
+        </li>
+    </ul>
+</div>
