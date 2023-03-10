@@ -29,6 +29,7 @@ class Country(models.Model):
 
 class Movie(models.Model):
     title = models.CharField(max_length=50, verbose_name='Наименование фильма')
+    title_eng = models.CharField(max_length=50, verbose_name='Наименование фильма на английском', null=True, blank=True)
     description = models.TextField(verbose_name='Описание', null=True, blank=True)
     year = models.IntegerField(verbose_name='Год выпуска', null=True, blank=True)
     country = models.ManyToManyField(Country, verbose_name='Страны', related_name='movies')
@@ -55,6 +56,17 @@ class Movie(models.Model):
             return "-"
 
     get_image_html.short_description = 'Изображение обложки'
+
+
+class Review(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reviews')
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='reviews')
+    text = models.TextField(verbose_name='Текст отзыва')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Время создания')
+
+    class Meta:
+        verbose_name = 'Отзыв'
+        verbose_name_plural = 'Отзывы'
 
 
 class Rating(models.Model):

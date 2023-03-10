@@ -3,10 +3,11 @@
 {% load crispy_forms_filters %}
 {% load crispy_forms_tags %}
 
-{% block content %}
+{% block title %}{{ room_name }}{% endblock %}
 
+{% block content %}
 <div class="container-chat">
-    <h3> Название комнаты - {{ room_name }} </h3>
+    <p class="no_films"> Название комнаты - "{{ room_name }}" </p>
     <div class="row">
         <div class="col-sm-9 video">
             <video preload="auto" id="movie" class="w-100 h-100" controls>
@@ -58,7 +59,7 @@
                     </option>
                     {% endfor %}
                 </select>
-                <button type="submit" class="btn btn-primary">Выбрать</button>
+                <button type="submit" class="btn btn-outline-primary">Выбрать</button>
                 <input type="hidden" name="movie_url" id="movieUrlInput">
             </form>
             {% else %}
@@ -75,11 +76,11 @@
         </div>
         <div class="col-sm-3">
             <br>
-            <h3>Поделиться комнатой в:</h3>
+            <h3>Поделиться комнатой:</h3>
             <a href="https://telegram.me/share/url?url={{ request.build_absolute_uri|urlencode }}&text=Присоединяйтесь%20к%20комнате%20{{ room_name|urlencode }}%20на%20MovieApp!"
-               target="_blank" class="btn btn-primary mb-2">Telegram</a>
+               target="_blank" class="btn btn-outline-primary">Telegram</a>
             <a href="https://www.instagram.com/create/shortcuts/?url={{ request.build_absolute_uri|urlencode }}&title={{ room_name|urlencode }}"
-               target="_blank" class="btn btn-primary mb-2">Instagram</a>
+               target="_blank" class="btn btn-outline-primary">Instagram</a>
         </div>
     </div>
 

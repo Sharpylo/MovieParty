@@ -23,7 +23,7 @@
         </li>
         <li class="page-item">
             <form action="{% url 'rooms_list' %}" method="get">
-                <select name="items_per_page_r" id="items_per_page_r" class="form-control"
+                <select name="items_per_page_r" id="items_per_page_r" class="form-control-p"
                         onchange="this.form.submit()">
                     <option value="5" {% if items_per_page_r == 5 %}selected{% endif %}>5</option>
                     <option value="10" {% if items_per_page_r == 10 or not items_per_page_r %}selected{% endif %}>10

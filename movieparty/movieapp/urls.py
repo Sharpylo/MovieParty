@@ -16,7 +16,7 @@ urlpatterns = [
     path('movies-search/', views.movie_search, name='movie_search'),
     path('movies-filter/', views.movie_filter, name='movie_filter'),
     path('movies-card/<int:item_id>/', views.movies_card, name='movies_card'),
-    path('movies-card/<int:item_id>/', views.movies_card, name='movies_card'),
+    path('movie-card/<int:movie_id>/reviews/', views.movie_reviews, name='movie_reviews'),
 
     path('room-create/', views.room_create, name='room_create'),
     path('rooms-list/', views.rooms_list, name='rooms_list'),

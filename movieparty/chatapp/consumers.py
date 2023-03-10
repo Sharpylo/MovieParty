@@ -99,7 +99,6 @@ class ChatConsumer(WebsocketConsumer):
             # Remove the oldest message
             oldest_message = Message.objects.filter(room=self.room).order_by('timestamp').first()
             oldest_message.delete()
-            print("Removed message")
         # -------------------- для обработки личных сообщений --------------------
         if message.startswith('/pm '):
             split = message.split(' ', 2)

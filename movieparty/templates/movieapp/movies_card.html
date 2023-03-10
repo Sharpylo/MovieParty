@@ -3,6 +3,8 @@
 {% load crispy_forms_tags %}
 {% load static %}
 
+{% block title %}{{ movie.title }}{% endblock %}
+
 {% block content %}
 
 <div class="container-fluid">
@@ -12,6 +14,7 @@
         </div>
         <div class="description col-sm-9 col-md-6 col-lg-8">
             <div class="card-title-1">{{ movie.title }}</div>
+            <div class="card-title-2">{{ movie.title_eng }}</div>
             <p class="card-movie">Год выпуска:</p><h4> {{ movie.year }}</h4>
             <p class="card-movie">Страна:</p>
             <h4>
@@ -47,7 +50,9 @@
     <div class="row">
         <h2>Описание фильма: </h2>
         <p class="card-movie">{{ movie.description }}</p>
-
+        <div class="reviews">
+            {% include 'movieapp/movie_raviews.html' %}
+        </div>
     </div>
 </div>
 

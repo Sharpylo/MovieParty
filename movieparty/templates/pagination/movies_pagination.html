@@ -22,7 +22,7 @@
         </li>
         <li class="page-item">
             <form action="{% url 'movies_list' %}" method="get">
-                <select name="items_per_page" id="items_per_page" class="form-control" onchange="this.form.submit()">
+                <select name="items_per_page" id="items_per_page" class="form-control-p" onchange="this.form.submit()">
                     <option value="4" {% if items_per_page == 4 %}selected{% endif %}>4</option>
                     <option value="8" {% if items_per_page == 8  %}selected{% endif %}>8</option>
                     <option value="12" {% if items_per_page == 12 or not items_per_page %}selected{% endif %}>12</option>

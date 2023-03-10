@@ -69,7 +69,7 @@ footer {
 .my-carousel .carousel-item img {
     object-fit: cover;
     width: calc(var(--index) * 45);
-    height: 400px;
+    height: 600px;
     display: block;
     margin: 0 auto;
 }
@@ -385,8 +385,13 @@ footer {
 .card-title-1 {
     color: var(--color-header);
     font-size: 60px;
-    margin-bottom: 10px;
+}
 
+.card-title-2 {
+    color: var(--color-text);
+    font-size: 30px;
+    margin-bottom: 10px;
+    padding-left: 30px;
 }
 
 .description {
@@ -429,6 +434,45 @@ footer {
     transform: scale(1.1);
 }
 
+
+.create_review button {
+    display: inline-block;
+    padding: 5px 10px;
+    background: transparent;
+    margin: 5px 10px;
+    border: 1px solid var(--color-header);
+    border-radius: 5px;
+    text-decoration: none;
+    color: var(--color-text);
+    font-size: 20px;
+    transition: all 0.3s ease;
+}
+
+.create_review button:hover {
+    background-color: #333;
+    color: #fff;
+    transform: scale(1.1);
+}
+
+
+.review li:first-child {
+  background-color: var(--color-header);
+  color: black;
+  font-size: 18px;
+
+  border: none;
+}
+
+.review li:last-child {
+  background-color: transparent;
+  color: var(--color-text);
+  font-size: 24px;
+    font-weight: bold;
+  border: 1px solid var(--color-header);
+}
+
+
+
 /*конец карточки фильма*/
 
 /*чат*/
@@ -465,7 +509,8 @@ footer {
 }
 
 select:hover, textarea:hover, input:hover {
-    background-color: var(--color-text);
+    background-color: white;
+    color: #0f0f0f;
 }
 
 .chat-b, .chat-b- {
@@ -473,6 +518,18 @@ select:hover, textarea:hover, input:hover {
     border: 1px solid var(--color-header);
     color: var(--color-text);
     width: 100%;
+}
+
+.form-control.mb-2 {
+    display: inline-block;
+    width: 80%;
+    border-radius: 10px;
+    margin-right: 10px; /* задаем отступ справа */
+}
+
+.btn-outline-primary {
+    display: inline-block;
+    vertical-align: top;
 }
 
 /*input[type="text"] {*/
@@ -853,13 +910,12 @@ textarea:focus {
     color: var(--color-text);
 }
 
-.form-control {
+.form-control-p {
     border: 1px solid var(--color-header);
     border-radius: 1px;
     background-color: transparent;
     color: var(--color-text);
 }
-
 
 
 /* конец pagination*/

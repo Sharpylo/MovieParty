@@ -3,8 +3,9 @@
 {% load crispy_forms_tags %}
 {% load static %}
 
-{% block content %}
+{% block title %}Список комнат{% endblock %}
 
+{% block content %}
 <div class="create-room">
     <a class="create-room" href="{% url 'room_create' %}">Добавить комнату</a>
 </div>

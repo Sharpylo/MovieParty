@@ -8,7 +8,6 @@ let userInteracted = false;
 
 // Прослушивание события изменения времени в видео
 videoElement.ontimeupdate = function () {
-    console.log("Time update: ", videoElement.currentTime);
     socket.send(JSON.stringify({
         action: "sync",
         time: videoElement.currentTime
@@ -16,7 +15,6 @@ videoElement.ontimeupdate = function () {
 };
 
 videoElement.addEventListener("seeked", function (event) {
-    console.log("Seeked event fired.");
     socket.send(JSON.stringify({
         action: "seek",
         time: event.target.currentTime
@@ -52,7 +50,6 @@ socket.onopen = function () {
 
 socket.onmessage = function (event) {
     const data = JSON.parse(event.data);
-    console.log("Message received: ", event.data);
     if (data.action === "sync") {
         videoElement.currentTime = data.time;
     } else if (data.action === "play") {

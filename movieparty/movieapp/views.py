@@ -4,9 +4,10 @@ from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Q
 
-from .forms import MovieForm, RoomForm, RatingForm
-from .models import Movie, Room, Genre, Country, Rating
+from .forms import MovieForm, RoomForm, RatingForm, ReviewForm
+from .models import Movie, Room, Genre, Country, Rating, Review
 
 from rest_framework import viewsets, status
 from .serializers import MovieSerializer, CountrySerializer, GenreSerializer, RoomSerializer
@@ -134,8 +135,7 @@ def rooms_list(request):
         Возвращает:
             Выводит страницу списка комнат со списком всех комнат.
     """
-    rooms_list = Room.objects.all()
-
+    rooms_list = Room.objects.all().order_by('-created_at')
     # Обработка выбора количества элементов на странице
     items_per_page_r = request.GET.get('items_per_page_r')
     if items_per_page_r is None:
@@ -143,7 +143,6 @@ def rooms_list(request):
     else:
         items_per_page_r = int(items_per_page_r)
     paginator = Paginator(rooms_list, items_per_page_r)
-
     page = request.GET.get('page')
     rooms = paginator.get_page(page)
     context = {'rooms': rooms, 'items_per_page_r': items_per_page_r}
@@ -211,6 +210,22 @@ def _get_movie_ratings(movie):
     return ratings, avg_rating, num_ratings
 
 
+def movie_reviews(request, movie_id):
+    movie = get_object_or_404(Movie, pk=movie_id)
+    form = ReviewForm(request.POST or None)
+    if form.is_valid():
+        review = form.save(commit=False)
+        review.movie = movie
+        review.user = request.user
+        review.save()
+        return redirect('movies_card', item_id=movie.id)
+    context = {
+        'movie': movie,
+        'form': form
+    }
+    return render(request, 'movieapp/movies_card.html', context)
+
+
 @login_required
 def movies_card(request, item_id):
     """
@@ -239,6 +254,7 @@ def movies_card(request, item_id):
     movie = get_object_or_404(Movie, pk=item_id)
     rating_form = RatingForm(request.POST or None)
     ratings, avg_rating, num_ratings = _get_movie_ratings(movie)
+    reviews = Review.objects.filter(movie=movie).order_by('-created_at')
 
     if request.method == 'POST' and request.user.is_authenticated:
         rating = request.user.ratings.filter(movie=movie).first()
@@ -265,7 +281,9 @@ def movies_card(request, item_id):
         'rating': rating,
         'rating_form': rating_form,
         'avg_rating': avg_rating,
-        'num_ratings': num_ratings
+        'num_ratings': num_ratings,
+        'form': ReviewForm(),
+        'reviews': reviews,
     }
     return render(request, 'movieapp/movies_card.html', context)
 
@@ -316,7 +334,7 @@ def movie_search(request):
             Выводит страницу списка фильмов со списком всех фильмов, в названии которых содержится поисковый запрос.
     """
     query = request.GET.get('q')
-    movies = Movie.objects.filter(title__icontains=query)
+    movies = Movie.objects.filter(Q(title__icontains=query) | Q(title_eng__icontains=query))
     return render(request, 'movieapp/movies_list.html', {'movies': movies})
 
 

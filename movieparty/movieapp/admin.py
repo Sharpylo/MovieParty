@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Movie, Room, Genre, Country, Rating
+from .models import Movie, Room, Genre, Country, Rating, Review
 
 
 class RatingInline(admin.TabularInline):
@@ -16,7 +16,21 @@ class MovieAdmin(admin.ModelAdmin):
     ordering = ('-year',)
 
 
+class RoomAdmin(admin.ModelAdmin):
+    list_display = ('name', 'created_by')
+    list_per_page = 20
+
+
+class GenreAdmin(admin.ModelAdmin):
+    list_per_page = 20
+
+
+class CountryAdmin(admin.ModelAdmin):
+    list_per_page = 20
+
+
 admin.site.register(Movie, MovieAdmin)
-admin.site.register(Room)
-admin.site.register(Genre)
-admin.site.register(Country)
+admin.site.register(Room, RoomAdmin)
+admin.site.register(Genre, GenreAdmin)
+admin.site.register(Country, CountryAdmin)
+admin.site.register(Review)

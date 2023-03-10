@@ -23,7 +23,6 @@ class MovieConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
-        print("Received message:", text_data)
         if 'time' in text_data_json:
             current_time = text_data_json['time']
             await self.channel_layer.group_send(

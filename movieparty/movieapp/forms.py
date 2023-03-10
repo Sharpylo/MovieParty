@@ -1,5 +1,5 @@
 from django import forms
-from .models import Movie, Room, Rating
+from .models import Movie, Room, Rating, Review
 
 
 class MovieForm(forms.ModelForm):
@@ -23,3 +23,14 @@ class RatingForm(forms.ModelForm):
     class Meta:
         model = Rating
         fields = ('value',)
+
+
+class ReviewForm(forms.ModelForm):
+    text = forms.CharField(
+        widget=forms.Textarea(attrs={'rows': 3}),
+        label='Текст отзыва'
+    )
+
+    class Meta:
+        model = Review
+        fields = ['text']

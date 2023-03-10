@@ -1,0 +1,26 @@
+<div class="create_review">
+    <h2>Отзывы к фильму "{{ movie.title }}"</h2>
+    {% if user.is_authenticated %}
+    <form method="POST" action="{% url 'movie_reviews' movie.id %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Добавить</button>
+    </form>
+    {% else %}
+    <p>Чтобы написать отзыв, <a href="{% url 'login' %}">войдите на сайт</a></p>
+    {% endif %}
+    <hr>
+    {% if reviews.count > 0 %}
+    {% for review in reviews %}
+    <div class="review">
+        <ul class="list-group">
+            <li class="list-group-item">Автор: {{ review.user.username }}, оставлен {{ review.created_at|date:"d-m-Y, H:i" }}</li>
+            <li class="list-group-item">{{ review.text }}</li>
+        </ul>
+        <br>
+    </div>
+    {% endfor %}
+    {% else %}
+    <p>Пока нет отзывов</p>
+    {% endif %}
+</div>
